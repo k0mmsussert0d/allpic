@@ -1,9 +1,10 @@
 package com.ewsie.allpic.user.model;
 
+import com.ewsie.allpic.user.role.RoleDTO;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.sql.Time;
+import java.time.LocalDateTime;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -18,6 +19,7 @@ public class UserDTO {
     String username;
     String password;
     String email;
-    Time registerTime;
+    LocalDateTime registerTime;
     Boolean isActive;
+    RoleDTO role;
 }

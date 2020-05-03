@@ -26,20 +26,20 @@ public class UserDTOServiceImpl implements UserDTOService {
     public UserDTO findById(Long id) {
         Optional<User> user = Optional.ofNullable(userService.findById(id));
 
-        return user.isPresent() ? modelMapper.map(user, UserDTO.class) : null;
+        return user.map(value -> modelMapper.map(value, UserDTO.class)).orElse(null);
     }
 
     @Override
     public UserDTO findByUsername(String username) {
         Optional<User> user = Optional.ofNullable(userService.findByUsername(username));
 
-        return user.isPresent() ? modelMapper.map(user.get(), UserDTO.class) : null;
+        return user.map(value -> modelMapper.map(value, UserDTO.class)).orElse(null);
     }
 
     @Override
     public UserDTO findByEmail(String email) {
         Optional<User> user = Optional.ofNullable(userService.findByEmail(email));
 
-        return user.isPresent() ? modelMapper.map(user, UserDTO.class) : null;
+        return user.map(value -> modelMapper.map(value, UserDTO.class)).orElse(null);
     }
 }

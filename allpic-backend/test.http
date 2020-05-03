@@ -1,14 +1,7 @@
-POST http://localhost:8080/auth/login
-Content-Type: application/x-www-form-urlencoded
-
-username=foo&password=bar
-
-###
-GET http://localhost:8080/auth/hello
-Accept: application/json
-
-###
-POST http://localhost:8080/auth/login
+### Authenticate with credentials
+### Success: 200 + Set-Cookie
+### Failure: 401
+POST {{host}}/auth/login
 Content-Type: application/json
 
 {
@@ -18,3 +11,10 @@ Content-Type: application/json
 
 ###
 
+### Authenticate with session cookie
+### Success: 200
+### Failure: 401
+GET {{host}}/auth/authenticate
+Cookie: authentication={{session_id}}
+
+###

@@ -1,4 +1,4 @@
-package com.ewsie.allpic.user.model;
+package com.ewsie.allpic.user.role;
 
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
@@ -15,9 +15,9 @@ public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "role_id")
-    int roleId;
+    @Column(name = "role_id", columnDefinition = "serial")
+    int id;
 
-    @Column(name = "role")
-    String role;
+    @Column(name = "role_name")
+    String roleName;
 }

@@ -1,13 +1,13 @@
 package com.ewsie.allpic.user.model;
 
+import com.ewsie.allpic.user.role.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
-import java.sql.Time;
-import java.util.Set;
+import java.time.LocalDateTime;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -34,12 +34,12 @@ public class User {
     String email;
 
     @Column(name="register_time", nullable = false)
-    Time registerTime;
+    LocalDateTime registerTime;
 
     @Column(name="active", nullable = false)
     Boolean isActive;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
-    Set<Role> roles;
+    Role role;
 }

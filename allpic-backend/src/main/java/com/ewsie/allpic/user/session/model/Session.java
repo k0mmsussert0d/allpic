@@ -1,7 +1,6 @@
-package com.ewsie.allpic.session.model;
+package com.ewsie.allpic.user.session.model;
 
 import com.ewsie.allpic.user.model.User;
-import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
@@ -21,13 +20,13 @@ public class Session {
     @Column(name = "id")
     Long id;
 
-    @Column(name = "sesion_ident")
+    @Column(name = "sesion_ident", unique = true)
     String sessionIdentifier;
 
     @Column(name = "valid_until")
     LocalDateTime validUntil;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     User user;
 }

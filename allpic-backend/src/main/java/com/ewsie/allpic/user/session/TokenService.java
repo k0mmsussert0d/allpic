@@ -1,4 +1,4 @@
-package com.ewsie.allpic.config;
+package com.ewsie.allpic.user.session;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
