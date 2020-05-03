@@ -5,9 +5,9 @@ POST {{host}}/auth/register
 Content-Type: application/json
 
 {
-  "username": "foo",
-  "password": "bar",
-  "email": "mail@example.com"
+  "username": "foo1",
+  "password": "bar222",
+  "email": "mail1@example.com"
 }
 
 ###
@@ -19,8 +19,8 @@ POST {{host}}/auth/login
 Content-Type: application/json
 
 {
-  "username": "foo",
-  "password": "bar"
+  "username": "foo1",
+  "password": "bar222"
 }
 
 ###
@@ -29,6 +29,11 @@ Content-Type: application/json
 ### Success: 200
 ### Failure: 401
 GET {{host}}/auth/authenticate
+Cookie: authentication={{session_id}}
+
+###
+
+GET {{host}}/logout
 Cookie: authentication={{session_id}}
 
 ###
