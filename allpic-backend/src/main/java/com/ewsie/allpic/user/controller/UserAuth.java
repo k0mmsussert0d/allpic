@@ -2,6 +2,7 @@ package com.ewsie.allpic.user.controller;
 
 import com.ewsie.allpic.user.model.CustomUserDetails;
 import com.ewsie.allpic.user.model.request.UserLoginRequestBody;
+import com.ewsie.allpic.user.model.request.UserRegisterRequestBody;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,4 +23,7 @@ public interface UserAuth {
     @PreAuthorize("isFullyAuthenticated()")
     @GetMapping("/authenticate")
     ResponseEntity<String> authenticate(@AuthenticationPrincipal CustomUserDetails user);
+
+    @PostMapping("/register")
+    ResponseEntity<String> register(@RequestBody UserRegisterRequestBody requestBody);
 }

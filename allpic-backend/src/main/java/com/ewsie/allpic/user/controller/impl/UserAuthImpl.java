@@ -1,9 +1,11 @@
 package com.ewsie.allpic.user.controller.impl;
 
+import com.ewsie.allpic.user.model.request.UserRegisterRequestBody;
 import com.ewsie.allpic.user.security.service.UserLoginService;
 import com.ewsie.allpic.user.controller.UserAuth;
 import com.ewsie.allpic.user.model.CustomUserDetails;
 import com.ewsie.allpic.user.model.request.UserLoginRequestBody;
+import com.ewsie.allpic.user.security.service.UserRegisterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserAuthImpl implements UserAuth {
 
     private final UserLoginService userLoginService;
+    private final UserRegisterService userRegisterService;
 
     @Override
     public ResponseEntity<String> login(@RequestBody UserLoginRequestBody requestBody) {
@@ -29,5 +32,15 @@ public class UserAuthImpl implements UserAuth {
     @Override
     public ResponseEntity<String> authenticate(@AuthenticationPrincipal CustomUserDetails user) {
         return userLoginService.authenticate(user);
+    }
+
+    @Override
+    public ResponseEntity<String> register(UserRegisterRequestBody requestBody) {
+
+        String username = requestBody.getUsername();
+        String password = requestBody.getPassword();
+        String email = requestBody.getEmail();
+
+        return userRegisterService.register(username, password, email);
     }
 }

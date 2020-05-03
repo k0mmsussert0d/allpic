@@ -39,7 +39,7 @@ public class User {
     @Column(name="active", nullable = false)
     Boolean isActive;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER) // TODO: choose proper cascade type
     @JoinColumn(name = "role_id")
     Role role;
 }

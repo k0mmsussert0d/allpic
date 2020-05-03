@@ -1,3 +1,17 @@
+### Register user
+### Success: 200
+### Failure: 401
+POST {{host}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "foo",
+  "password": "bar",
+  "email": "mail@example.com"
+}
+
+###
+
 ### Authenticate with credentials
 ### Success: 200 + Set-Cookie
 ### Failure: 401
