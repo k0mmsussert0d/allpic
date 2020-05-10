@@ -66,6 +66,6 @@ public class UserLoginServiceImpl implements UserLoginService {
 
     @Override
     public ResponseEntity<String> authenticate(@AuthenticationPrincipal CustomUserDetails user) {
-        return ResponseEntity.ok().body(user.getAuthorities().iterator().next().getAuthority());
+        return ResponseEntity.ok().body(user.getUsername());
     }
 }

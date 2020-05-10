@@ -59,9 +59,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .logout(configurer -> {
                     configurer.addLogoutHandler(new HeaderWriterLogoutHandler(
-                    new ClearSiteDataHeaderWriter(ClearSiteDataHeaderWriter.Directive.ALL)
+                        new ClearSiteDataHeaderWriter(ClearSiteDataHeaderWriter.Directive.ALL)
                     ));
                     configurer.logoutSuccessHandler(customLogoutSuccessHandler);
+                    configurer.logoutUrl("/auth/logout");
                     configurer.deleteCookies("authentication");
                 })
                 .exceptionHandling(configurer -> configurer.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))

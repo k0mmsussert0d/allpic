@@ -33,7 +33,7 @@ Cookie: authentication={{session_id}}
 
 ###
 
-GET {{host}}/logout
+GET {{host}}/auth/logout
 Cookie: authentication={{session_id}}
 
 ###
