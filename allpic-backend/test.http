@@ -1,0 +1,39 @@
+### Register user
+### Success: 200
+### Failure: 401
+POST {{host}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "foo1",
+  "password": "bar222",
+  "email": "mail1@example.com"
+}
+
+###
+
+### Authenticate with credentials
+### Success: 200 + Set-Cookie
+### Failure: 401
+POST {{host}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "foo1",
+  "password": "bar222"
+}
+
+###
+
+### Authenticate with session cookie
+### Success: 200
+### Failure: 401
+GET {{host}}/auth/authenticate
+Cookie: authentication={{session_id}}
+
+###
+
+GET {{host}}/auth/logout
+Cookie: authentication={{session_id}}
+
+###
