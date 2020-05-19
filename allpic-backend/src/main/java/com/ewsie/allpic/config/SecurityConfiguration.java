@@ -69,7 +69,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .addFilterAfter(authCookieFilter, SecurityContextPersistenceFilter.class)
                 .authorizeRequests()
                 .antMatchers("/auth/*").permitAll()
-                .anyRequest().authenticated()
                 .and()
                 .formLogin().permitAll()
         ;

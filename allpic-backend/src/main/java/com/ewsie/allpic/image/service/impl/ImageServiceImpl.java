@@ -21,6 +21,11 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
+    public Image findByPath(String path) {
+        return imageRepository.findByPath(path).orElse(null);
+    }
+
+    @Override
     public List<Image> findAllUploadedBy(User uploader) {
         return imageRepository.findAllByUploader(uploader).orElse(null);
     }

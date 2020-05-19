@@ -37,7 +37,7 @@ public class Image {
     @Column(name="active", nullable = false)
     Boolean isActive;
 
-    @Column(name="uploader_id", nullable = true)
+    @JoinColumn(name="uploader_id", nullable = true)
     @ManyToOne(fetch = FetchType.EAGER)
     User uploader;
 }

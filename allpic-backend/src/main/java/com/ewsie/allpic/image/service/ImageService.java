@@ -9,6 +9,8 @@ public interface ImageService {
 
     Image findById(Long id);
 
+    Image findByPath(String path);
+
     List<Image> findAllUploadedBy(User uploader);
 
     Image save(Image image);

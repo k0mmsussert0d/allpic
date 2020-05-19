@@ -8,6 +8,8 @@ import java.util.List;
 public interface ImageDTOService {
     ImageDTO findById(Long id);
 
+    ImageDTO findByPath(String path);
+
     List<ImageDTO> findAllUploadedBy(UserDTO uploader);
 
     ImageDTO save(ImageDTO image);

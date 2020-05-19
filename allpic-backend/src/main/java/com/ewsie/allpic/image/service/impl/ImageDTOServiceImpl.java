@@ -34,6 +34,17 @@ public class ImageDTOServiceImpl implements ImageDTOService {
     }
 
     @Override
+    public ImageDTO findByPath(String path) {
+        Optional<Image> image = Optional.ofNullable(imageService.findByPath(path));
+
+        if (image.isPresent()) {
+            return modelMapper.map(image.get(), ImageDTO.class);
+        }
+
+        return null;
+    }
+
+    @Override
     public List<ImageDTO> findAllUploadedBy(UserDTO uploaderDto) {
         User uploader = modelMapper.map(uploaderDto, User.class);
         Optional<List<Image>> images = Optional.ofNullable(imageService.findAllUploadedBy(uploader));
