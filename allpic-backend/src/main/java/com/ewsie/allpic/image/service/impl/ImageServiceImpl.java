@@ -21,8 +21,8 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Image findByPath(String path) {
-        return imageRepository.findByPath(path).orElse(null);
+    public Image findByToken(String token) {
+        return imageRepository.findByToken(token).orElse(null);
     }
 
     @Override

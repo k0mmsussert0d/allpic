@@ -7,8 +7,10 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.ewsie.allpic.config.AppConfig;
 import com.ewsie.allpic.image.model.ImageDTO;
 import com.ewsie.allpic.image.service.ImageDTOService;
+import com.ewsie.allpic.image.service.ImageTokenService;
 import com.ewsie.allpic.image.service.SaveImageService;
 import com.ewsie.allpic.user.session.model.SessionDTO;
 import lombok.RequiredArgsConstructor;
@@ -17,19 +19,23 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class SaveImageServiceImpl implements SaveImageService {
 
+    private final AppConfig appConfig;
+    private final ImageTokenService imageTokenService;
     private final ImageDTOService imageDTOService;
 
     @Override
     public ImageDTO saveImage(MultipartFile image, SessionDTO sessionDTO) throws IOException {
 
-        String path = "foobar";
+        String token = getUniqueImageToken();
+
         ImageDTO imageDTO = ImageDTO.builder()
-                .path(path)
+                .token(token)
                 .title("new title")
                 .uploadTime(LocalDateTime.now())
                 .isActive(true)
@@ -43,8 +49,8 @@ public class SaveImageServiceImpl implements SaveImageService {
 
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType("image/jpeg");
-            metadata.addUserMetadata("path", path);
-            PutObjectRequest request = new PutObjectRequest("allpic-public", path, image.getInputStream(), metadata);
+            metadata.addUserMetadata("token", token);
+            PutObjectRequest request = new PutObjectRequest("allpic-public", token + ".jpg", image.getInputStream(), metadata);
             s3Client.putObject(request);
         } catch (AmazonServiceException e) {
             e.printStackTrace();
@@ -53,5 +59,17 @@ public class SaveImageServiceImpl implements SaveImageService {
         }
 
         return savedImageDTO;
+    }
+
+    private String getUniqueImageToken() {
+        String token = imageTokenService.generateToken(appConfig.getImgTokenLength());
+        Optional<ImageDTO> duplicatedTokenImageDto = Optional.ofNullable(imageDTOService.findByToken(token));
+
+        while (duplicatedTokenImageDto.isPresent()) {
+            token = imageTokenService.generateToken(appConfig.getImgTokenLength());
+            duplicatedTokenImageDto = Optional.ofNullable(imageDTOService.findByToken(token));
+        }
+
+        return token;
     }
 }

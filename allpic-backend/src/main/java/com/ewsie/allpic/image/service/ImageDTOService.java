@@ -8,7 +8,7 @@ import java.util.List;
 public interface ImageDTOService {
     ImageDTO findById(Long id);
 
-    ImageDTO findByPath(String path);
+    ImageDTO findByToken(String token);
 
     List<ImageDTO> findAllUploadedBy(UserDTO uploader);
 

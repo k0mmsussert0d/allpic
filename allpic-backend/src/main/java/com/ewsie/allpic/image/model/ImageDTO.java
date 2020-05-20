@@ -15,7 +15,7 @@ import static lombok.AccessLevel.PRIVATE;
 @FieldDefaults(level = PRIVATE)
 public class ImageDTO {
     Long id;
-    String path;
+    String token;
     String title;
     LocalDateTime uploadTime;
     Boolean isActive;

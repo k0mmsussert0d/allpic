@@ -34,8 +34,8 @@ public class ImageDTOServiceImpl implements ImageDTOService {
     }
 
     @Override
-    public ImageDTO findByPath(String path) {
-        Optional<Image> image = Optional.ofNullable(imageService.findByPath(path));
+    public ImageDTO findByToken(String token) {
+        Optional<Image> image = Optional.ofNullable(imageService.findByToken(token));
 
         if (image.isPresent()) {
             return modelMapper.map(image.get(), ImageDTO.class);

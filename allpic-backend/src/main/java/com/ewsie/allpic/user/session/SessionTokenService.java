@@ -7,7 +7,7 @@ import java.security.SecureRandom;
 
 @RequiredArgsConstructor
 @Service
-public class TokenService {
+public class SessionTokenService {
 
     private final SecureRandom random = new SecureRandom();
 

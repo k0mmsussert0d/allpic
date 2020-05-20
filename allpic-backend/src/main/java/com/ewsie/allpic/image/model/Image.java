@@ -26,7 +26,7 @@ public class Image {
     Long id;
 
     @Column(name="path", nullable = false)
-    String path;
+    String token;
 
     @Column(name="title", nullable = true)
     String title;

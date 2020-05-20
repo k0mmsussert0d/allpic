@@ -9,7 +9,7 @@ public interface ImageService {
 
     Image findById(Long id);
 
-    Image findByPath(String path);
+    Image findByToken(String token);
 
     List<Image> findAllUploadedBy(User uploader);
 

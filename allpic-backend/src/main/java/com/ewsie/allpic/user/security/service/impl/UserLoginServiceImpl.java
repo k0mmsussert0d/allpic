@@ -4,7 +4,7 @@ import com.ewsie.allpic.user.model.CustomUserDetails;
 import com.ewsie.allpic.user.model.UserDTO;
 import com.ewsie.allpic.user.security.service.UserLoginService;
 import com.ewsie.allpic.user.service.UserDTOService;
-import com.ewsie.allpic.user.session.TokenService;
+import com.ewsie.allpic.user.session.SessionTokenService;
 import com.ewsie.allpic.user.session.model.SessionDTO;
 import com.ewsie.allpic.user.session.service.SessionDTOService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class UserLoginServiceImpl implements UserLoginService {
 
     private final UserDTOService userDTOService;
     private final PasswordEncoder passwordEncoder;
-    private final TokenService tokenService;
+    private final SessionTokenService sessionTokenService;
     private final SessionDTOService sessionDTOService;
 
     @Override
@@ -38,7 +38,7 @@ public class UserLoginServiceImpl implements UserLoginService {
             boolean passwordMatches = passwordEncoder.matches(password, requestedUser.get().getPassword());
 
             if (passwordMatches && requestedUser.get().getIsActive()) {
-                String sessionId = tokenService.createToken();
+                String sessionId = sessionTokenService.createToken();
 
                 SessionDTO newSession = SessionDTO.builder()
                         .sessionIdentifier(sessionId)
