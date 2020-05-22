@@ -2,6 +2,7 @@ package com.ewsie.allpic.image.controller;
 
 import com.ewsie.allpic.image.model.ImageDetails;
 import com.ewsie.allpic.user.model.CustomUserDetails;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -11,8 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/img")
 public interface ImageController {
 
-    @GetMapping("/i/{id}")
-    ResponseEntity<String> getImage(@PathVariable String id);
+    @GetMapping("/i/{token}")
+    ResponseEntity<Resource> getImage(@PathVariable String token);
 
     @PostMapping("/upload")
     ResponseEntity<String> uploadImage(
