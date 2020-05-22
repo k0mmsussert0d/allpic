@@ -1,6 +1,7 @@
 package com.ewsie.allpic.user.model;
 
 import com.ewsie.allpic.user.role.RoleDTO;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,6 +12,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class CustomUserDetails implements UserDetails {
 
+    @Getter
     private final UserDTO user;
 
     @Override
