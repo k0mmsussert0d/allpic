@@ -45,6 +45,14 @@ Content-Type: multipart/form-data; boundary=WebAppBoundary
 Content-Disposition: form-data; name="file"; filename="shiki.jpg"
 
 < ./../../shiki.jpg
---WebAppBoundary--
+--WebAppBoundary
+Content-Disposition: form-data; name="metadata"
+Content-Type: application/json
 
+{
+    "title": "shiki",
+    "public": true
+}
+
+--WebAppBoundary--
 ###
