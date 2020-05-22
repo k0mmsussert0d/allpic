@@ -38,20 +38,25 @@ Cookie: authentication={{session_id}}
 
 ###
 
+### Send a new image
+### (send with authentication cookie to save an uploader info)
+### Success: 200 + body
+### Failure: 401
+### Error: 503
 POST http://{{host}}/img/upload
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 
 --WebAppBoundary
-Content-Disposition: form-data; name="file"; filename="shiki.jpg"
+Content-Disposition: form-data; name="file"; filename="test.jpg"
 
-< ./../../shiki.jpg
+< ./../../test.jpg
 --WebAppBoundary
 Content-Disposition: form-data; name="metadata"
 Content-Type: application/json
 
 {
-    "title": "shiki",
-    "public": false
+    "title": "test",
+    "public": true
 }
 
 --WebAppBoundary--

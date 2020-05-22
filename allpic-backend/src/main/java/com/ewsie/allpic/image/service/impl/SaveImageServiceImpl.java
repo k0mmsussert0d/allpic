@@ -94,13 +94,13 @@ public class SaveImageServiceImpl implements SaveImageService {
 
     private void uploadImageToS3(MultipartFile image, String token, String mimeType) throws IOException {
         AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
-                .withRegion(Regions.EU_CENTRAL_1)
+                .withRegion(appConfig.getAwsRegion())
                 .build();
 
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(mimeType);
         metadata.addUserMetadata("token", token);
-        PutObjectRequest request = new PutObjectRequest("allpic-public", token, image.getInputStream(), metadata);
+        PutObjectRequest request = new PutObjectRequest(appConfig.getS3StorageBucket(), token, image.getInputStream(), metadata);
         s3Client.putObject(request);
     }
 }

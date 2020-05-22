@@ -12,6 +12,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Data
 public class AppConfig {
 
+    String awsRegion;
     String s3StorageBucket;
 
     @Length(min = 1)
