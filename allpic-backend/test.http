@@ -51,7 +51,7 @@ Content-Type: application/json
 
 {
     "title": "shiki",
-    "public": true
+    "public": false
 }
 
 --WebAppBoundary--

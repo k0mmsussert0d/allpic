@@ -34,6 +34,9 @@ public class Image {
     @Column(name="upload_time", nullable = false)
     LocalDateTime uploadTime;
 
+    @Column(name="public", nullable = false)
+    Boolean isPublic;
+
     @Column(name="active", nullable = false)
     Boolean isActive;
 

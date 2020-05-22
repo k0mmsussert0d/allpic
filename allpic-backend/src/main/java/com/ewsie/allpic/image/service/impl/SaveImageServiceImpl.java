@@ -38,7 +38,7 @@ public class SaveImageServiceImpl implements SaveImageService {
         String token = getUniqueImageToken();
         String mimeType = getFileMimeType(image.getOriginalFilename());
 
-        ImageDTO savedImageDTO = getPersistedImageDto(title, uploader, token);
+        ImageDTO savedImageDTO = getPersistedImageDto(title, isPublic, uploader, token);
 
         uploadImageToS3(image, token, mimeType);
 
@@ -80,11 +80,12 @@ public class SaveImageServiceImpl implements SaveImageService {
         return null;
     }
 
-    private ImageDTO getPersistedImageDto(String title, UserDTO uploader, String token) {
+    private ImageDTO getPersistedImageDto(String title, boolean isPublic, UserDTO uploader, String token) {
         ImageDTO imageDTO = ImageDTO.builder()
                 .token(token)
                 .title(title)
                 .uploadTime(LocalDateTime.now())
+                .isPublic(isPublic)
                 .isActive(true)
                 .uploader(uploader)
                 .build();

@@ -28,6 +28,7 @@ public class ImageDTO {
     String title;
     @JsonSerialize(using = CustomLocalDateTimeSerializer.class)
     LocalDateTime uploadTime;
+    Boolean isPublic;
     Boolean isActive;
 
     @JsonIgnore
