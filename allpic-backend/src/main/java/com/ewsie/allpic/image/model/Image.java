@@ -1,5 +1,6 @@
 package com.ewsie.allpic.image.model;
 
+import com.ewsie.allpic.image.comment.model.Comment;
 import com.ewsie.allpic.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,6 +10,8 @@ import lombok.experimental.FieldDefaults;
 import javax.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -43,4 +46,16 @@ public class Image {
     @JoinColumn(name="uploader_id", nullable = true)
     @ManyToOne(fetch = FetchType.EAGER)
     User uploader;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "image_id")
+    List<Comment> comments;
+
+    public void addComment(Comment comment) {
+        if (this.comments == null) {
+            this.comments = new ArrayList<>();
+        }
+
+        this.comments.add(comment);
+    }
 }

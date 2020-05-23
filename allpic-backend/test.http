@@ -67,3 +67,20 @@ Content-Type: application/json
 ### Failure: 404
 ### Error: 503
 GET http://{{host}}/img/i/{{token}}
+
+###
+
+### Post a comment
+### Success: 200
+### Failure: 401, 404
+PUT http://{{host}}/comment/{{imageToken}}
+Cookie: authentication={{session_id}}
+Content-Type: application/json
+
+"test comment 123456"
+###
+
+### Get comments for image
+### Success: 200 + json
+### Failure: 404
+GET http://{{host}}/comment/{{imageToken}}
