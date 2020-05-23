@@ -1,18 +1,17 @@
 package com.ewsie.allpic.image.model;
 
+import com.ewsie.allpic.image.comment.model.CommentDTO;
 import com.ewsie.allpic.user.model.UserDTO;
+import com.ewsie.allpic.user.utils.CustomUserDTOUsernameSerializer;
+import com.ewsie.allpic.utils.CustomLocalDateTimeSerializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -31,31 +30,17 @@ public class ImageDTO {
     Boolean isPublic;
     Boolean isActive;
 
-    @JsonIgnore
+    @JsonSerialize(using = CustomUserDTOUsernameSerializer.class)
     UserDTO uploader;
 
-    public static class CustomLocalDateTimeSerializer
-            extends StdSerializer<LocalDateTime> {
+    @JsonIgnore
+    List<CommentDTO> comments;
 
-        private static DateTimeFormatter formatter =
-                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
-        public CustomLocalDateTimeSerializer() {
-            this(null);
+    public void addComment(CommentDTO commentDTO) {
+        if (this.comments == null) {
+            this.comments = new ArrayList<>();
         }
 
-        public CustomLocalDateTimeSerializer(Class<LocalDateTime> t) {
-            super(t);
-        }
-
-        @Override
-        public void serialize(
-                LocalDateTime value,
-                JsonGenerator gen,
-                SerializerProvider arg2)
-                throws IOException, JsonProcessingException {
-
-            gen.writeString(formatter.format(value));
-        }
+        this.comments.add(commentDTO);
     }
 }
