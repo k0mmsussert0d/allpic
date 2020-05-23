@@ -51,18 +51,8 @@ public class CommentControllerImpl implements CommentController {
     public ResponseEntity<List<CommentDTO>> getCommentsForImage(String imageToken) {
         Optional<ImageDTO> requestedImage = Optional.ofNullable(imageDTOService.findByToken(imageToken));
         if (requestedImage.isEmpty()) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Image with token " + imageToken + " not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-
-//        String response;
-
-//        try {
-//            response = new ObjectMapper().writeValueAsString(requestedImage.get().getComments());
-//        } catch (JsonProcessingException e) {
-//            e.printStackTrace();
-//            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
-//        }
 
         return ResponseEntity.status(HttpStatus.OK).body(requestedImage.get().getComments());
     }

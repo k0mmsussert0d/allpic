@@ -75,9 +75,9 @@ GET http://{{host}}/img/i/{{token}}
 ### Failure: 401, 404
 PUT http://{{host}}/comment/{{imageToken}}
 Cookie: authentication={{session_id}}
-Content-Type: application/json
+Content-Type: text/plain
 
-"test comment 123456"
+test comment 123456
 ###
 
 ### Get comments for image
