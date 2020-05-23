@@ -1,8 +1,8 @@
-package com.ewsie.allpic.user.controller.impl;
+package com.ewsie.allpic.user.security.controller.impl;
 
 import com.ewsie.allpic.user.model.request.UserRegisterRequestBody;
 import com.ewsie.allpic.user.security.service.UserLoginService;
-import com.ewsie.allpic.user.controller.UserAuth;
+import com.ewsie.allpic.user.security.controller.UserAuth;
 import com.ewsie.allpic.user.model.CustomUserDetails;
 import com.ewsie.allpic.user.model.request.UserLoginRequestBody;
 import com.ewsie.allpic.user.security.service.UserRegisterService;
