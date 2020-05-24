@@ -1,4 +1,4 @@
-package com.ewsie.allpic.user.controller;
+package com.ewsie.allpic.user.security.controller;
 
 import com.ewsie.allpic.user.model.CustomUserDetails;
 import com.ewsie.allpic.user.model.request.UserLoginRequestBody;
