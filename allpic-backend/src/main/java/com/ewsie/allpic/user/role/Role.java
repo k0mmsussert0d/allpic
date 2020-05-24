@@ -18,6 +18,6 @@ public class Role {
     @Column(name = "role_id", columnDefinition = "serial")
     int id;
 
-    @Column(name = "role_name")
+    @Column(name = "role_name", unique = true)
     String roleName;
 }
