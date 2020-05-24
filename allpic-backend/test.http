@@ -84,3 +84,15 @@ test comment 123456
 ### Success: 200 + json
 ### Failure: 404
 GET http://{{host}}/comment/{{imageToken}}
+
+### Get user info
+### Success: 200 + json
+### Failure: 404
+GET http://{{host}}/user/{{username}}
+
+###
+
+### Get list of user images
+### Success: 200 + json
+### Failure: 404
+GET http://{{host}}/user/{{username}}/images
