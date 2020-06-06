@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +37,9 @@ public class UserControllerImpl implements UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(imageDTOService.findAllUploadedBy(requestedUser.get()));
+        List<ImageDTO> images = imageDTOService.findAllUploadedBy(requestedUser.get()).stream()
+                .filter(i -> i.getIsPublic() && i.getIsActive())
+                .collect(Collectors.toList());
+        return ResponseEntity.status(HttpStatus.OK).body(images);
     }
 }
