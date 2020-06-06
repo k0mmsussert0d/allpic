@@ -5,7 +5,9 @@ import com.ewsie.allpic.user.session.repository.SessionRepository;
 import com.ewsie.allpic.user.session.service.SessionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -32,6 +34,12 @@ public class SessionServiceImpl implements SessionService {
     @Override
     public void remove(Session session) {
         sessionRepository.delete(session);
+    }
+
+    @Override
+    @Transactional
+    public void removeOlderThan(LocalDateTime time) {
+        sessionRepository.removeByValidUntilBefore(time);
     }
 
     @Override
