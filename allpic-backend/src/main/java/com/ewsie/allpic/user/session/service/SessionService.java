@@ -2,6 +2,8 @@ package com.ewsie.allpic.user.session.service;
 
 import com.ewsie.allpic.user.session.model.Session;
 
+import java.time.LocalDateTime;
+
 public interface SessionService {
 
     void create(Session session);
@@ -11,6 +13,8 @@ public interface SessionService {
     Session findByIdentifier(String identifier);
 
     void remove(Session session);
+
+    void removeOlderThan(LocalDateTime time);
 
     void removeByIdentifier(String identifier);
 }
