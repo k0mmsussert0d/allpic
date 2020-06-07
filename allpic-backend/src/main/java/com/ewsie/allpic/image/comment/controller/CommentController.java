@@ -23,4 +23,8 @@ public interface CommentController {
 
     @GetMapping("{imageToken}")
     ResponseEntity<List<CommentDTO>> getCommentsForImage(@PathVariable String imageToken);
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_MOD','ROLE_ADMIN')")
+    ResponseEntity<Void> removeComment(@PathVariable Long id);
 }

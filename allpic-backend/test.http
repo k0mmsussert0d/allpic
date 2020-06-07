@@ -105,3 +105,12 @@ GET http://{{host}}/user/foo1/images
 ### Failure (not enough permissions): 403
 DELETE http://{{host}}/img/i/{{imageToken}}
 Cookie: authentication={{session_id}}
+
+###
+
+### Remove comment (as a user with MOD role)
+### Success: 200
+### Failure (image not found): 404
+### Failure (not enough permissions): 403
+DELETE http://{{host}}/comment/{{comment_id}}
+Cookie: authentication={{session_id}}

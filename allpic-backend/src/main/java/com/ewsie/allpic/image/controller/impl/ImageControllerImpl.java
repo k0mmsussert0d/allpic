@@ -76,7 +76,7 @@ public class ImageControllerImpl implements ImageController {
     }
 
     @Override
-    public ResponseEntity<ImageDTO> removeImage(String token) {
+    public ResponseEntity<Void> removeImage(String token) {
         try {
             unpublishImageService.hideImageByToken(token);
         } catch(NullPointerException e) {
