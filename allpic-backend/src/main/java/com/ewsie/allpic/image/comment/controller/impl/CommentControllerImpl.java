@@ -2,6 +2,7 @@ package com.ewsie.allpic.image.comment.controller.impl;
 
 import com.ewsie.allpic.image.comment.controller.CommentController;
 import com.ewsie.allpic.image.comment.model.CommentDTO;
+import com.ewsie.allpic.image.comment.service.UnpublishCommentService;
 import com.ewsie.allpic.image.model.ImageDTO;
 import com.ewsie.allpic.image.service.ImageDTOService;
 import com.ewsie.allpic.user.model.CustomUserDetails;
@@ -22,6 +23,7 @@ import java.util.Optional;
 public class CommentControllerImpl implements CommentController {
 
     private final ImageDTOService imageDTOService;
+    private final UnpublishCommentService unpublishCommentService;
 
     @Override
     public ResponseEntity<String> addComment(String imageToken, @AuthenticationPrincipal CustomUserDetails author, @RequestBody String message) {
@@ -55,5 +57,16 @@ public class CommentControllerImpl implements CommentController {
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(requestedImage.get().getComments());
+    }
+
+    @Override
+    public ResponseEntity<Void> removeComment(Long id) {
+        try {
+            unpublishCommentService.unpublishCommentById(id);
+        } catch (NullPointerException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

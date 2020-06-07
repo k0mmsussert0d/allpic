@@ -26,5 +26,5 @@ public interface ImageController {
 
     @DeleteMapping("/i/{token}")
     @PreAuthorize("hasAnyRole('ROLE_MOD','ROLE_ADMIN')")
-    ResponseEntity<ImageDTO> removeImage(@PathVariable String token);
+    ResponseEntity<Void> removeImage(@PathVariable String token);
 }
