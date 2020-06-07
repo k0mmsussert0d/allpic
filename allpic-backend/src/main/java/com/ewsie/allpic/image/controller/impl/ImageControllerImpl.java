@@ -7,6 +7,7 @@ import com.ewsie.allpic.image.model.ImageDTOWithContent;
 import com.ewsie.allpic.image.model.ImageDetails;
 import com.ewsie.allpic.image.service.LoadImageService;
 import com.ewsie.allpic.image.service.SaveImageService;
+import com.ewsie.allpic.image.service.UnpublishImageService;
 import com.ewsie.allpic.user.model.CustomUserDetails;
 import com.ewsie.allpic.user.model.UserDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,6 +29,7 @@ public class ImageControllerImpl implements ImageController {
 
     private final LoadImageService loadImageService;
     private final SaveImageService saveImageService;
+    private final UnpublishImageService unpublishImageService;
 
     @Override
     public ResponseEntity<Resource> getImage(String token) {
@@ -71,5 +73,16 @@ public class ImageControllerImpl implements ImageController {
         }
 
         return ResponseEntity.ok(response);
+    }
+
+    @Override
+    public ResponseEntity<ImageDTO> removeImage(String token) {
+        try {
+            unpublishImageService.hideImageByToken(token);
+        } catch(NullPointerException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
