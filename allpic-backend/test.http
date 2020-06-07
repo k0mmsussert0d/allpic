@@ -29,7 +29,7 @@ Content-Type: application/json
 ### Success: 200
 ### Failure: 401
 GET {{host}}/auth/authenticate
-Cookie: authentication={{session_id}}
+Cookie: authentication=-z9zjg4c71xu9-bqbbe4axudgq
 
 ###
 
@@ -95,4 +95,13 @@ GET http://{{host}}/user/{{username}}
 ### Get list of user images
 ### Success: 200 + json
 ### Failure: 404
-GET http://{{host}}/user/{{username}}/images
+GET http://{{host}}/user/foo1/images
+
+###
+
+### Remove image (as a user with MOD role)
+### Success: 200
+### Failure (image not found): 404
+### Failure (not enough permissions): 403
+DELETE http://{{host}}/img/i/{{imageToken}}
+Cookie: authentication={{session_id}}
