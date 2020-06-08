@@ -20,4 +20,6 @@ public class AppConfig {
 
     @Length(min = 2)
     String imgTokenChars;
+
+    int thumbSize;
 }
