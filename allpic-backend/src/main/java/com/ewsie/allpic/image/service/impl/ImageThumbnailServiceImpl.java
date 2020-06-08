@@ -18,7 +18,7 @@ public class ImageThumbnailServiceImpl implements ImageThumbnailService {
 
     @Override
     public File generateThumbnail(InputStream file, String token, String extension) throws IOException {
-        File output = File.createTempFile("token-", "-thumb");
+        File output = File.createTempFile("token-", "-thumb." + extension);
 
         Thumbnails.of(file)
                 .size(appConfig.getThumbSize(), appConfig.getThumbSize())
