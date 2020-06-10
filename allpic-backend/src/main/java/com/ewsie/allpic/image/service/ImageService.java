@@ -13,5 +13,7 @@ public interface ImageService {
 
     List<Image> findAllUploadedBy(User uploader);
 
+    List<Image> findAllOrderByUploadedTimeDesc();
+
     Image save(Image image);
 }

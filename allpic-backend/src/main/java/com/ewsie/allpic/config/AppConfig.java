@@ -22,4 +22,6 @@ public class AppConfig {
     String imgTokenChars;
 
     int thumbSize;
+
+    int mostRecentImagesCount;
 }
