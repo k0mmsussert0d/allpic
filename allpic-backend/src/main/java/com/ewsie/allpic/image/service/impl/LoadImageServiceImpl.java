@@ -38,6 +38,22 @@ public class LoadImageServiceImpl implements LoadImageService {
         return res;
     }
 
+    @Override
+    public ImageDTOWithContent loadThumb(String token) throws NullPointerException, SdkClientException {
+        ImageDTO requestedImageDto = getImageDetails(token);
+
+        S3Object thumbObject = getImageObjectFromS3(token + "_thumb");
+
+        ImageDTOWithContent res = ImageDTOWithContent.builder()
+                .imageDTO(requestedImageDto)
+                .content(thumbObject.getObjectContent())
+                .contentType(thumbObject.getObjectMetadata().getContentType())
+                .contentLength(thumbObject.getObjectMetadata().getContentLength())
+                .build();
+
+        return res;
+    }
+
     private ImageDTO getImageDetails(String token) {
         Optional<ImageDTO> requestedImageDto = Optional.ofNullable(imageDTOService.findByToken(token));
         if (requestedImageDto.isEmpty()) {

@@ -7,7 +7,7 @@ import static lombok.AccessLevel.PRIVATE;
 
 @Data
 @FieldDefaults(level = PRIVATE)
-public class ImageDetails {
+public class UploadImageDetails {
     String title;
     boolean isPublic;
 }

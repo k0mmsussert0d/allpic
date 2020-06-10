@@ -12,5 +12,7 @@ public interface ImageDTOService {
 
     List<ImageDTO> findAllUploadedBy(UserDTO uploader);
 
+    List<ImageDTO> findAllOrderByUploadedTimeDesc();
+
     ImageDTO save(ImageDTO image);
 }

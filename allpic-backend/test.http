@@ -47,9 +47,9 @@ POST http://{{host}}/img/upload
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 
 --WebAppBoundary
-Content-Disposition: form-data; name="file"; filename="test.jpg"
+Content-Disposition: form-data; name="file"; filename="test.png"
 
-< ./../../test.jpg
+< ./../../img/1522881821450bf6aScreen-Shot-2018-04-04-at-3.41.25-PM-940x641.png
 --WebAppBoundary
 Content-Disposition: form-data; name="metadata"
 Content-Type: application/json
@@ -67,6 +67,18 @@ Content-Type: application/json
 ### Failure: 404
 ### Error: 503
 GET http://{{host}}/img/i/{{token}}
+
+### Get an image thumbnail
+### Success: 200 + file stream
+### Failure: 404
+### Error: 503
+GET http://{{host}}/img/i/thumb/NbS5D
+
+###
+
+### Get list of latest images
+### Success: 200
+GET http://{{host}}/img/recent
 
 ###
 

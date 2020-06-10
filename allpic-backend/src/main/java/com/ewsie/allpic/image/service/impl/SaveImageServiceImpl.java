@@ -1,7 +1,6 @@
 package com.ewsie.allpic.image.service.impl;
 
 import com.amazonaws.SdkClientException;
-import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -9,6 +8,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.ewsie.allpic.config.AppConfig;
 import com.ewsie.allpic.image.model.ImageDTO;
 import com.ewsie.allpic.image.service.ImageDTOService;
+import com.ewsie.allpic.image.service.ImageThumbnailService;
 import com.ewsie.allpic.image.service.ImageTokenService;
 import com.ewsie.allpic.image.service.SaveImageService;
 import com.ewsie.allpic.user.model.UserDTO;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
@@ -30,6 +30,7 @@ public class SaveImageServiceImpl implements SaveImageService {
     private final ImageTokenService imageTokenService;
     private final ImageDTOService imageDTOService;
     private final Map<String, String> extensionToMimeType;
+    private final ImageThumbnailService imageThumbnailService;
 
     @Override
     public ImageDTO saveImage(MultipartFile image, String title, @NotNull boolean isPublic, UserDTO uploader)
@@ -39,8 +40,11 @@ public class SaveImageServiceImpl implements SaveImageService {
         String mimeType = getFileMimeType(image.getOriginalFilename());
 
         ImageDTO savedImageDTO = getPersistedImageDto(title, isPublic, uploader, token);
+        File thumbnailImage = imageThumbnailService.generateThumbnail(image.getInputStream(), token, getFileExtension(image.getOriginalFilename()));
 
-        uploadImageToS3(image, token, mimeType);
+        uploadImageToS3(image.getInputStream(), token, mimeType);
+        uploadImageToS3(new FileInputStream(thumbnailImage), token + "_thumb", mimeType);
+        thumbnailImage.deleteOnExit();
 
         return savedImageDTO;
     }
@@ -92,7 +96,7 @@ public class SaveImageServiceImpl implements SaveImageService {
         return imageDTOService.save(imageDTO);
     }
 
-    private void uploadImageToS3(MultipartFile image, String token, String mimeType) throws IOException {
+    private void uploadImageToS3(InputStream imageStream, String token, String mimeType) throws IOException {
         AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
                 .withRegion(appConfig.getAwsRegion())
                 .build();
@@ -100,7 +104,7 @@ public class SaveImageServiceImpl implements SaveImageService {
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(mimeType);
         metadata.addUserMetadata("token", token);
-        PutObjectRequest request = new PutObjectRequest(appConfig.getS3StorageBucket(), token, image.getInputStream(), metadata);
+        PutObjectRequest request = new PutObjectRequest(appConfig.getS3StorageBucket(), token, imageStream, metadata);
         s3Client.putObject(request);
     }
 }
