@@ -29,7 +29,7 @@ Content-Type: application/json
 ### Success: 200
 ### Failure: 401
 GET {{host}}/auth/authenticate
-Cookie: authentication=-z9zjg4c71xu9-bqbbe4axudgq
+Cookie: authentication={{session_id}}
 
 ###
 

@@ -1,4 +1,4 @@
-package com.ewsie.allpic.user.controller.impl;
+package com.ewsie.allpic.user.controller;
 
 import com.ewsie.allpic.image.model.ImageDTO;
 import com.ewsie.allpic.user.model.UserDTO;
