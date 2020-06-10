@@ -2,12 +2,14 @@ package com.ewsie.allpic.user.service.impl;
 
 import com.ewsie.allpic.user.model.User;
 import com.ewsie.allpic.user.repository.UserRepository;
+import com.ewsie.allpic.user.role.Role;
 import com.ewsie.allpic.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -37,5 +39,10 @@ public class UserServiceImpl implements UserService {
     @Nullable
     public User findByEmail(String email) {
         return userRepository.findByEmail(email).orElse(null);
+    }
+
+    @Override
+    public List<User> findUsersByRole(Role role) {
+        return userRepository.findUsersByRole(role).orElse(null);
     }
 }
