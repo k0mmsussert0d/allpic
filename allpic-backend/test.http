@@ -126,3 +126,32 @@ Cookie: authentication={{session_id}}
 ### Failure (not enough permissions): 403
 DELETE http://{{host}}/comment/{{comment_id}}
 Cookie: authentication={{session_id}}
+
+###
+
+### Get list of moderators (as an admin)
+### Success: 200 + list
+### Failure: 401 (no access)
+### Failure: 404 (no mods)
+GET http://{{host}}/mod/
+Cookie: authentication={{admin_session_id}}
+
+###
+
+### Assign user mod role
+### Success: 200
+### Failure: 400 (already with mod role)
+### Failure: 401 (no access)
+### Failure: 404 (no such user)
+PUT http://{{host}}/mod/{{userid}}
+Cookie: authentication={{admin_session_id}}
+
+###
+
+### Remove mod role from user
+### Success: 200
+### Failure: 400 (no mod role on this user)
+### Failure: 401 (no access)
+### Failure: 404 (no such user)
+DELETE http://{{host}}/mod/{{userid}}
+Cookie: authentication={{admin_session_id}}
