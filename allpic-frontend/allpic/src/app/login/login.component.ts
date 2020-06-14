@@ -13,8 +13,7 @@ export class LoginComponent implements OnInit {
     loading = false;
     submitted = false;
     returnUrl: string;
-    error: string;
-    success: string;
+
 
     constructor(
         private formBuilder: FormBuilder,
@@ -29,13 +28,6 @@ export class LoginComponent implements OnInit {
             password: ['', [Validators.required, Validators.maxLength(8)]]
         });
 
-        // get return url from route parameters or default to '/'
-        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-                
-        // show success message on registration
-        if (this.route.snapshot.queryParams['registered']) {
-            this.success = 'Registration successful';
-            }
     }
 
     // convenience getter for easy access to form fields
@@ -48,7 +40,7 @@ export class LoginComponent implements OnInit {
             username: this.loginForm.get('username').value,
             password: this.loginForm.get('password').value
         }
-        this.submitted = true;
+     /*   this.submitted = true;
 
         // reset alerts on submit
         this.error = null;
@@ -60,16 +52,19 @@ export class LoginComponent implements OnInit {
             return;
         }
 
-        this.loading = true;
+        this.loading = true;*/
         this.authenticationService.login(loginDTO)
-            .pipe(first())
             .subscribe(
                 data => {
-                    this.router.navigate([this.returnUrl]);
+                    console.log(data);
+                    localStorage.setItem('username',loginDTO.username);
+                    console.log(loginDTO.username);
+                    console.log(localStorage.getItem('username'));
+                    this.router.navigate(['profile']);
                 },
                 error => {
-                    this.error = error;
-                    this.loading = false;
+                    
+                    console.log(error);
                 });
     }
 }

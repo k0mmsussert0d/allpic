@@ -13,15 +13,29 @@ export class BackInterceptor implements HttpInterceptor {
 
   constructor() {}
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
-    request = request.clone({
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Access-Control-Allow-Origin': '*'
-
-      }),
-        withCredentials: true
-    });
+    
+    if(request.headers.has('ignore')){
+      
+      request = request.clone({
+        headers: new HttpHeaders({
+          'Content-Type': 'multipart/form-data; boundary=WebAppBoundary',
+          'Access-Control-Allow-Origin': '*'
+  
+        }),
+          withCredentials: true
+      });
+      console.log(request.body.get('file'));
+    }else{
+      request = request.clone({
+        headers: new HttpHeaders({
+          'Content-Type':  'application/json',
+          'Access-Control-Allow-Origin': '*'
+  
+        }),
+          withCredentials: true
+      });
+    }
+    
 
     return next.handle(request);
 }
