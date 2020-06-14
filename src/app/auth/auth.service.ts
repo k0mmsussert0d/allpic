@@ -13,11 +13,8 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   public login(loginDTO: LoginDTO): Observable<string> {
-    return this.http.post<any>(`${this.host}/auth/login`, loginDTO)
-        .pipe(map(resp =>  {
-         console.log(resp);
-         return resp;   
-        }));
+    return this.http.post<any>(`${this.host}/auth/login`, loginDTO, {responseType: 'text' as 'json'});
+       
   }
   
 

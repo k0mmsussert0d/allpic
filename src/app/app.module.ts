@@ -10,6 +10,8 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthService } from './auth/auth.service';
 import { BackInterceptor } from './_helpers/back.interceptor';
+import { UserprofileComponent } from './userprofile/userprofile.component';
+import { AppFileUploadComponent } from './app-file-upload/app-file-upload.component';
 
 
 @NgModule({
@@ -17,7 +19,9 @@ import { BackInterceptor } from './_helpers/back.interceptor';
     AppComponent,
     HomeComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    UserprofileComponent,
+    AppFileUploadComponent
   ],
   imports: [
     BrowserModule,
