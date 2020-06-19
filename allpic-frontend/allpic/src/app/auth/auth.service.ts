@@ -3,13 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { LoginDTO } from '../model/login-dto';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private host: string = 'http://localhost:8080';
+  private host: string = environment.apiUrl;
   constructor(private http: HttpClient) { }
 
   public login(loginDTO: LoginDTO): Observable<string> {
