@@ -18,7 +18,7 @@ export class BackInterceptor implements HttpInterceptor {
       
       request = request.clone({
         headers: new HttpHeaders({
-          'Content-Type': 'multipart/form-data; boundary=WebAppBoundary',
+          'Content-Type': undefined,
           'Access-Control-Allow-Origin': '*'
   
         }),

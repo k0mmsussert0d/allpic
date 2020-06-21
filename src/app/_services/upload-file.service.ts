@@ -21,13 +21,14 @@ export class UploadFileService {
       title: name,
       isPublic: isPublic 
     };
-    formData.append('metadata', JSON.stringify(imgdetails));
+    formData.append('metadata', new Blob([JSON.stringify(imgdetails)], {type: 'application/json'}));
+    //formData.append('metadata', JSON.stringify(imgdetails));
+
     
    console.log(formData.get('file'));
    console.log(formData.get('metadata'));
 
     let headers = new HttpHeaders({
-      'Content-Type': 'multipart/form-data; boundary=WebAppBoundary',
       'ignore': 'ignore'
     })
     const req = new HttpRequest('POST', `${this.baseUrl}/img/upload`, formData, {

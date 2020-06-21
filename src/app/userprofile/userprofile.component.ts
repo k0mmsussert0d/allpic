@@ -11,7 +11,7 @@ import { UserImagesService } from '../_services/user-images.service';
 })
 export class UserprofileComponent implements OnInit {
   public user: User;
-  public images: Array<Image>;
+  public images: Array<any>;
   constructor(private userprofile: UserInfoService, private userimage: UserImagesService) {
     this.getImage();
     this.getInfo();
@@ -24,7 +24,7 @@ export class UserprofileComponent implements OnInit {
   }
   getImage(): void{
     const token = localStorage.getItem('username');
-    this.userimage.userImage(token).subscribe(data => {this.images = data});
+    this.images = this.userprofile.imageInfo(token);
   }
 
   ngOnInit(): void {
