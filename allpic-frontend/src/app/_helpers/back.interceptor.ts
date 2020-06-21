@@ -26,14 +26,14 @@ export class BackInterceptor implements HttpInterceptor {
       });
       console.log(request.body.get('file'));
     }else{
-      request = request.clone({
-        headers: new HttpHeaders({
-          'Content-Type':  'application/json',
-          'Access-Control-Allow-Origin': '*'
+      // request = request.clone({
+      //   headers: new HttpHeaders({
+      //     'Content-Type':  'application/json',
+      //     'Access-Control-Allow-Origin': '*'
   
-        }),
-          withCredentials: true
-      });
+      //   }),
+      //     withCredentials: true
+      // });
     }
     
 
