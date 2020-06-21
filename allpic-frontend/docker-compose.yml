@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:12-alpine
+    environment:
+      - POSTGRES_DB=allpic
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - ./docker/postgres:/var/lib/postgresql/data
+    restart: always
+  backend:
+    build: ./allpic-backend
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - AWS_ACCESS_KEY_ID=AKIASRSWEK355VP4SAFM
+      - AWS_SECRET_ACCESS_KEY=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
+    depends_on:
+      - db
+  frontend:
+    build: ./allpic-frontend/allpic
+    environment:
+      - API_URL=http://backend:8080
+    depends_on:
+      - backend
+    ports:
+      - 4200:4200
