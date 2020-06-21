@@ -3,12 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { User } from '../model/user';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserInfoService {
-  private host: string = 'http://localhost:8080';
+  private host: string = environment.apiUrl;
   constructor(private http: HttpClient) { }
 
   imageToShow: any;
@@ -18,7 +19,7 @@ export class UserInfoService {
     reader.addEventListener("load", () => {
       this.imageToShow = reader.result;
     }, false);
-    
+
 
     if (image) {
       reader.readAsDataURL(image);
@@ -43,7 +44,7 @@ export class UserInfoService {
             list.push(this.createImageFromBlob(data))
           )
         });
-        
+
       }));
       return list;
   }
