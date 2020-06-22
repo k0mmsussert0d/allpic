@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { appRoutingModule } from './app-routing.module';
 import { ErrorInterceptor } from './_helpers/error.interceptor'
@@ -12,6 +12,7 @@ import { AuthService } from './auth/auth.service';
 import { BackInterceptor } from './_helpers/back.interceptor';
 import { UserprofileComponent } from './userprofile/userprofile.component';
 import { AppFileUploadComponent } from './app-file-upload/app-file-upload.component';
+import { ModsComponent } from './moderators/mods/mods.component';
 
 
 @NgModule({
@@ -21,13 +22,15 @@ import { AppFileUploadComponent } from './app-file-upload/app-file-upload.compon
     LoginComponent,
     RegisterComponent,
     UserprofileComponent,
-    AppFileUploadComponent
+    AppFileUploadComponent,
+    ModsComponent
   ],
   imports: [
     BrowserModule,
     ReactiveFormsModule,
     HttpClientModule,
-    appRoutingModule
+    appRoutingModule,
+    FormsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
