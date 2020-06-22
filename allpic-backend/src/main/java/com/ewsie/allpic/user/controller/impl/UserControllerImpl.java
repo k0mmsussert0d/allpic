@@ -22,6 +22,16 @@ public class UserControllerImpl implements UserController {
     private final ImageDTOService imageDTOService;
 
     @Override
+    public ResponseEntity<List<UserDTO>> users() {
+        Optional<List<UserDTO>> users = Optional.ofNullable(userDTOService.getAll());
+        if (users.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(users.get());
+    }
+
+    @Override
     public ResponseEntity<UserDTO> userInfo(String username) {
         Optional<UserDTO> requestedUser = Optional.ofNullable(userDTOService.findByUsername(username));
         if (requestedUser.isEmpty()) {

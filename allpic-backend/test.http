@@ -19,7 +19,7 @@ POST {{host}}/auth/login
 Content-Type: application/json
 
 {
-  "username": "foo1",
+  "username": "admin",
   "password": "bar222"
 }
 
@@ -126,6 +126,14 @@ Cookie: authentication={{session_id}}
 ### Failure (not enough permissions): 403
 DELETE http://{{host}}/comment/{{comment_id}}
 Cookie: authentication={{session_id}}
+
+### Get list of users (all)
+
+### Success: 200 + list
+### Failure: 401 (no access)
+### Failure: 404 (no users)
+GET http://{{host}}/user/
+Cookie: authentication={{admin_session_id}}
 
 ###
 
