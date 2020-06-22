@@ -5,6 +5,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { UserprofileComponent } from './userprofile/userprofile.component';
 import { AppFileUploadComponent } from './app-file-upload/app-file-upload.component';
+import { ModsComponent } from './moderators/mods/mods.component';
 
 
 
@@ -14,6 +15,7 @@ const routes: Routes = [
     { path: 'register', component: RegisterComponent },
     { path: 'profile', component: UserprofileComponent},
     { path: 'upload-file', component: AppFileUploadComponent},
+    { path: 'moderators', component: ModsComponent},
 
     // otherwise redirect to home
     { path: '**', redirectTo: '' }

@@ -11,7 +11,8 @@ import { environment } from 'src/environments/environment';
 export class ModsService {
   
   private baseUrl: string = environment.apiUrl;
-  host: any;
+  host: string = environment.apiUrl;
+  
   constructor(private http: HttpClient) { }
   public modInfo(): Observable<Array<User>> {
     return this.http.get<any>(`${this.host}/mod/`)
