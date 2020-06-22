@@ -1,5 +1,6 @@
 package com.ewsie.allpic.user.security.controller;
 
+import com.ewsie.allpic.user.model.AuthenticatedUserDTO;
 import com.ewsie.allpic.user.model.CustomUserDetails;
 import com.ewsie.allpic.user.model.request.UserLoginRequestBody;
 import com.ewsie.allpic.user.model.request.UserRegisterRequestBody;
@@ -11,8 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpSession;
-import java.util.List;
 
 @RequestMapping("/auth")
 public interface UserAuth {
@@ -22,7 +21,7 @@ public interface UserAuth {
 
     @PreAuthorize("isFullyAuthenticated()")
     @GetMapping("/authenticate")
-    ResponseEntity<String> authenticate(@AuthenticationPrincipal CustomUserDetails user);
+    ResponseEntity<AuthenticatedUserDTO> authenticate(@AuthenticationPrincipal CustomUserDetails user);
 
     @PostMapping("/register")
     ResponseEntity<String> register(@RequestBody UserRegisterRequestBody requestBody);

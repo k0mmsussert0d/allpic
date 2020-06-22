@@ -5,4 +5,6 @@ import com.ewsie.allpic.image.model.ImageDTOWithContent;
 
 public interface LoadImageService {
     ImageDTOWithContent loadImage(String token) throws IllegalArgumentException, SdkClientException;
+
+    ImageDTOWithContent loadThumb(String token) throws IllegalArgumentException, SdkClientException;
 }

@@ -2,6 +2,7 @@ package com.ewsie.allpic.user.controller.impl;
 
 import com.ewsie.allpic.image.model.ImageDTO;
 import com.ewsie.allpic.image.service.ImageDTOService;
+import com.ewsie.allpic.user.controller.UserController;
 import com.ewsie.allpic.user.model.UserDTO;
 import com.ewsie.allpic.user.service.UserDTOService;
 import lombok.RequiredArgsConstructor;

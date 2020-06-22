@@ -1,5 +1,6 @@
 package com.ewsie.allpic.user.security.controller.impl;
 
+import com.ewsie.allpic.user.model.AuthenticatedUserDTO;
 import com.ewsie.allpic.user.model.request.UserRegisterRequestBody;
 import com.ewsie.allpic.user.security.service.UserLoginService;
 import com.ewsie.allpic.user.security.controller.UserAuth;
@@ -30,8 +31,15 @@ public class UserAuthImpl implements UserAuth {
     }
 
     @Override
-    public ResponseEntity<String> authenticate(@AuthenticationPrincipal CustomUserDetails user) {
-        return userLoginService.authenticate(user);
+    public ResponseEntity<AuthenticatedUserDTO> authenticate(@AuthenticationPrincipal CustomUserDetails user) {
+        String roles = user.getAuthorities().toString().replaceAll("([\\[\\]])", ""); // remove [ and ]
+
+        return ResponseEntity.ok(
+                AuthenticatedUserDTO.builder()
+                        .username(user.getUsername())
+                        .role(roles)
+                        .build()
+        );
     }
 
     @Override
