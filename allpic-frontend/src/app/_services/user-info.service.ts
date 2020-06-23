@@ -39,7 +39,7 @@ export class UserInfoService {
   public imageInfo(username: string): Array<any> {
     let list: Array<any> = new Array<any>();
      this.http.get<any>(`${this.host}/user/${username}/images`)
-      .subscribe(resp => {
+      .pipe(map(resp => {
         console.log(resp);
         resp.forEach(element => {
           this.http.get<any>(`${this.host}/img/i/${element.path}`).subscribe(data =>
@@ -48,7 +48,7 @@ export class UserInfoService {
           )
         });
 
-      });
+      }));
       console.log(list);
       return list;
   }
