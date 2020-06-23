@@ -17,10 +17,13 @@ export class UploadFileService {
 
     formData.append('file', file);
     console.log(file);
+    
     const imgdetails = {
       title: name,
       isPublic: isPublic ?? false
+      
     };
+    console.log(isPublic);
     formData.append('metadata', new Blob([JSON.stringify(imgdetails)], {type: 'application/json'}));
     //formData.append('metadata', JSON.stringify(imgdetails));
 

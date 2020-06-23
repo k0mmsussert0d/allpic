@@ -28,8 +28,8 @@
     
     <div class="form-group">
         <label for="ispublic">Prywatny</label>
-        <!--input type="radio" name="ispublic" value="true"  formControlName="ispublic" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.ispublic.errors }" /-->
-        <input type="checkbox" name="ispublic" value="false"  formControlName="ispublic" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.ispublic.errors }" />
+        <input type="checkbox" name="ispublic" value="true"  formControlName="ispublic" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.ispublic.errors }" />
+        <!--input type="checkbox" name="ispublic" value="false"  formControlName="ispublic" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.ispublic.errors }" /-->
         <div *ngIf="submitted && f.ispublic.errors" class="invalid-feedback"></div>
             
     </div>

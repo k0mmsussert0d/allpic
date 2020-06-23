@@ -42,7 +42,7 @@ export class UserInfoService {
       .subscribe(resp => {
         console.log(resp);
         resp.forEach(element => {
-          this.http.get<any>(`${this.host}/img/i/${element.path}`).subscribe(data =>
+          this.http.get<any>(`${this.host}/img/i/${element.token}`).subscribe(data =>
             list.push(this.createImageFromBlob(data))
             
           )
