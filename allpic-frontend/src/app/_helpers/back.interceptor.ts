@@ -14,7 +14,7 @@ export class BackInterceptor implements HttpInterceptor {
   constructor() {}
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     
-    if(request.headers.has('ignore')){
+  /*  if(request.headers.has('ignore')){
       
       request = request.clone({
         headers: new HttpHeaders({
@@ -26,17 +26,19 @@ export class BackInterceptor implements HttpInterceptor {
       });
       console.log(request.body.get('file'));
     }else{
-      // request = request.clone({
-      //   headers: new HttpHeaders({
-      //     'Content-Type':  'application/json',
-      //     'Access-Control-Allow-Origin': '*'
+       request = request.clone({
+         headers: new HttpHeaders({
+           'Content-Type':  'application/json',
+           'Access-Control-Allow-Origin': '*'
   
-      //   }),
-      //     withCredentials: true
-      // });
+         }),
+           withCredentials: true
+       });
     }
     
 
     return next.handle(request);
-}
+}*/
+    return next.handle(request.clone( {withCredentials: true}));
+  } 
 }

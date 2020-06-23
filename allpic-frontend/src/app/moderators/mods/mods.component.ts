@@ -12,7 +12,7 @@ export class ModsComponent implements OnInit {
   public users: Array<User>;
   public username: string;
   constructor(private modsService: ModsService) { 
-    //this.modInfo();
+    this.modInfo();
 
   }
   public modInfo(){

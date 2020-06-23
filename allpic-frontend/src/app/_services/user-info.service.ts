@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { User } from '../model/user';
 import { environment } from '../../environments/environment';
+import { listLazyRoutes } from '@angular/compiler/src/aot/lazy_routes';
 
 @Injectable({
   providedIn: 'root'
@@ -40,10 +41,10 @@ export class UserInfoService {
      this.http.get<any>(`${this.host}/user/${username}/images`)
       .subscribe(resp => {
         console.log(resp);
-        resp.array.forEach(element => {
+        resp.forEach(element => {
           this.http.get<any>(`${this.host}/img/i/${element.path}`).subscribe(data =>
             list.push(this.createImageFromBlob(data))
-
+            
           )
         });
 
@@ -51,5 +52,15 @@ export class UserInfoService {
       console.log(list);
       return list;
   }
+
+  public imageHome(): Array<any>{
+    let list: Array<any> = new Array<any>();
+    this.http.get<any>(`${this.host}/img/recent`).subscribe(data =>
+      list.push(this.createImageFromBlob(data))
+
+    )
+    return list;
+  }
+  
 
 }
