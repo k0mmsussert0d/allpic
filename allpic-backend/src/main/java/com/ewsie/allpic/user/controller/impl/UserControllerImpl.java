@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -48,9 +49,14 @@ public class UserControllerImpl implements UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        List<ImageDTO> images = imageDTOService.findAllUploadedBy(requestedUser.get()).stream()
+        Optional<List<ImageDTO>> images = Optional.ofNullable(imageDTOService.findAllUploadedBy(requestedUser.get()));
+        if (images.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(Collections.emptyList());
+        }
+
+        List<ImageDTO> publicImages = imageDTOService.findAllUploadedBy(requestedUser.get()).stream()
                 .filter(i -> i.getIsPublic() && i.getIsActive())
                 .collect(Collectors.toList());
-        return ResponseEntity.status(HttpStatus.OK).body(images);
+        return ResponseEntity.status(HttpStatus.OK).body(publicImages);
     }
 }
