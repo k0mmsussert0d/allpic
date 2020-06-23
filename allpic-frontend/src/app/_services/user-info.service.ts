@@ -38,14 +38,17 @@ export class UserInfoService {
   public imageInfo(username: string): Array<any> {
     let list: Array<any> = new Array<any>();
      this.http.get<any>(`${this.host}/user/${username}/images`)
-      .pipe(map(resp => {
+      .subscribe(resp => {
+        console.log(resp);
         resp.array.forEach(element => {
-          this.http.get<any>(`${this.host}/img/i/${element.token}`).subscribe(data =>
+          this.http.get<any>(`${this.host}/img/i/${element.path}`).subscribe(data =>
             list.push(this.createImageFromBlob(data))
+
           )
         });
 
-      }));
+      });
+      console.log(list);
       return list;
   }
 
