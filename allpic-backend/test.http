@@ -104,10 +104,11 @@ GET http://{{host}}/user/{{username}}
 
 ###
 
-### Get list of user images
+### Get list of self-uploaded user's images
 ### Success: 200 + json
 ### Failure: 404
-GET http://{{host}}/user/foo1/images
+GET http://{{host}}/user/images
+Cookie: authentication={{session_id}}
 
 ###
 
