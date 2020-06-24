@@ -38,29 +38,54 @@ export class UserInfoService {
   }
   public imageInfo(username: string): Array<any> {
     let list: Array<any> = new Array<any>();
-     this.http.get<any>(`${this.host}/user/${username}/images`)
-      .subscribe(resp => {
+    this.http.get<any>(`${this.host}/user/images`)
+      .subscribe((resp: Array<any>) => {
         console.log(resp);
-        resp.forEach(element => {
-          this.http.get<any>(`${this.host}/img/i/${element.token}`).subscribe(data =>
-            list.push(this.createImageFromBlob(data))
-            
-          )
-        });
+        for (let index = 0; index < resp.length; index++) {
+          const element = resp[index];
+          this.http.get<any>(`${this.host}/img/i/${element.token}`, {responseType: 'blob' as 'json'}).subscribe(data => {
+            list.push(this.createImageFromBlob(data));
+            console.log(data);
+          },e => console.log(e))
+          
 
+
+        }
       });
       console.log(list);
-      return list;
+
+          /*resp.forEach(element => {
+            this.http.get<any>(`${this.host}/img/i/${element.token}`).subscribe(data =>{
+              list.push(this.createImageFromBlob(data));
+              console.log(data);
+            })
+  
+          });
+  
+        });*/
+          
+        return list;
   }
 
-  public imageHome(): Array<any>{
-    let list: Array<any> = new Array<any>();
-    this.http.get<any>(`${this.host}/img/recent`).subscribe(data =>
-      list.push(this.createImageFromBlob(data))
 
-    )
+  public imageHome(): Array<any> {
+    let list: Array<any> = new Array<any>();
+    this.http.get<any>(`${this.host}/img/recent`)
+      .subscribe((resp: Array<any>) => {
+        console.log(resp);
+        for (let index = 0; index < resp.length; index++) {
+          const element = resp[index];
+          this.http.get<any>(`${this.host}/img/i/${element.token}`, {responseType: 'blob' as 'json'}).subscribe(data => {
+            list.push(this.createImageFromBlob(data));
+            console.log(data);
+          },e => console.log(e))
+          
+
+
+        }
+      });
     return list;
   }
-  
+
 
 }

@@ -13,6 +13,7 @@ import { BackInterceptor } from './_helpers/back.interceptor';
 import { UserprofileComponent } from './userprofile/userprofile.component';
 import { AppFileUploadComponent } from './app-file-upload/app-file-upload.component';
 import { ModsComponent } from './moderators/mods/mods.component';
+import { CookieService } from 'ngx-cookie-service';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { ModsComponent } from './moderators/mods/mods.component';
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: BackInterceptor, multi: true},
-    {provide: AuthService}
+    {provide: AuthService},
+    {provide: CookieService }
   ],
   
   bootstrap: [AppComponent]

@@ -20,15 +20,16 @@ export class UploadFileService {
     
     const imgdetails = {
       title: name,
-      isPublic: isPublic ?? false
+      isPublic: isPublic 
       
     };
     console.log(isPublic);
-    formData.append('metadata', new Blob([JSON.stringify(imgdetails)], {type: 'application/json'}));
+    formData.append('metadata', new Blob([JSON.stringify(imgdetails)],  {type: 'application/json'}));
     //formData.append('metadata', JSON.stringify(imgdetails));
 
    console.log(formData.get('file'));
    console.log(formData.get('metadata'));
+   console.log(formData);
 
 
     return this.http.post<any>(`${this.baseUrl}/img/upload`, formData, {

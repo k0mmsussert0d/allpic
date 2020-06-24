@@ -60,7 +60,7 @@ export class AppFileUploadComponent implements OnInit {
     ngOnInit() {
       this.imgForm = this.formBuilder.group({
           title: ['', Validators.required],
-          ispublic: ['', Validators.required ]
+          ispublic: [false, Validators.required ]
       });
     }
   

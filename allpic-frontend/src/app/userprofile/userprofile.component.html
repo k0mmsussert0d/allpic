@@ -15,20 +15,23 @@
                       </div>
                       <div class="col-md-8 col-xs-12 col-sm-6 col-lg-8" >
                           <div class="container" >
-                            <h2>{{user.username}}</h2>
-                            <p><b> {{user.role}}</b></p>
+                            <h2>{{user?.username}}</h2>
+                            <p><b> {{user?.role}}</b></p>
                           
                            
                           </div>
                            <hr>
                           <ul class="container details" >
                             
-                            <li><p><span class="glyphicon glyphicon-envelope one" style="width:50px;"></span>{{user.email}}</p></li>
+                            <li><p><span class="glyphicon glyphicon-envelope one" style="width:50px;"></span>{{user?.email}}</p></li>
                           </ul>
                           <hr>
-                          <div class="col-sm-5 col-xs-6 tital " >Data dołączenia: {{user.registerTime}}</div>
+                          <div class="col-sm-5 col-xs-6 tital " >Data dołączenia: {{user?.registerTime}}</div>
                       </div>
+                      <button (click)="logout()">Wyloguj</button>
+                      
                 </div>
+                 Dodane przez Ciebie: 
                 <div *ngFor="let image of images">
                   <div class="row">
                     <div class="col-md-3">

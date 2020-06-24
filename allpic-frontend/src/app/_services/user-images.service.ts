@@ -14,7 +14,7 @@ export class UserImagesService {
 
 
   public userImage(username: string): Observable<Array<Image>> {
-    return this.http.get<any>(`${this.host}/user/${username}/images`)
+    return this.http.get<any>(`${this.host}/user/images`)
         .pipe(map(resp =>  {
          console.log(resp);
          return resp;
