@@ -19,7 +19,7 @@ POST {{host}}/auth/login
 Content-Type: application/json
 
 {
-  "username": "foo1",
+  "username": "admin",
   "password": "bar222"
 }
 
@@ -104,10 +104,11 @@ GET http://{{host}}/user/{{username}}
 
 ###
 
-### Get list of user images
+### Get list of self-uploaded user's images
 ### Success: 200 + json
 ### Failure: 404
-GET http://{{host}}/user/foo1/images
+GET http://{{host}}/user/images
+Cookie: authentication={{session_id}}
 
 ###
 
@@ -126,6 +127,14 @@ Cookie: authentication={{session_id}}
 ### Failure (not enough permissions): 403
 DELETE http://{{host}}/comment/{{comment_id}}
 Cookie: authentication={{session_id}}
+
+### Get list of users (all)
+
+### Success: 200 + list
+### Failure: 401 (no access)
+### Failure: 404 (no users)
+GET http://{{host}}/user/
+Cookie: authentication={{admin_session_id}}
 
 ###
 

@@ -21,7 +21,10 @@ public class AppConfig {
     @Length(min = 2)
     String imgTokenChars;
 
+    String corsHosts;
+
     int thumbSize;
 
     int mostRecentImagesCount;
+
 }

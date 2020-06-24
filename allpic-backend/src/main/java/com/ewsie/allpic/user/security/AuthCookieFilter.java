@@ -1,5 +1,6 @@
 package com.ewsie.allpic.user.security;
 
+import com.ewsie.allpic.config.AppConfig;
 import com.ewsie.allpic.user.security.UserAuthentication;
 import com.ewsie.allpic.user.session.model.SessionDTO;
 import com.ewsie.allpic.user.session.service.SessionDTOService;
@@ -16,6 +17,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -26,6 +28,7 @@ import java.util.Optional;
 public class AuthCookieFilter extends GenericFilterBean {
 
     private final SessionDTOService sessionDTOService;
+    private final AppConfig appConfig;
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -43,11 +46,17 @@ public class AuthCookieFilter extends GenericFilterBean {
             }
         }
 
-        filterChain.doFilter(servletRequest, servletResponse);
+        HttpServletResponse response = (HttpServletResponse) servletResponse;
+        response.setHeader("Access-Control-Allow-Origin", appConfig.getCorsHosts());
+        response.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE");
+        response.setHeader("Access-Control-Max-Age", "3600");
+        response.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Origin, Authorization, Content-Type, Cache-Control");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+        filterChain.doFilter(servletRequest, response);
     }
 
     public static String extractAuthCookie(HttpServletRequest request) {
-        List<Cookie> cookies = Arrays.asList(request.getCookies());
+        List<Cookie> cookies = Arrays.asList(Optional.ofNullable(request.getCookies()).orElse(new Cookie[0]));
 
         if (!cookies.isEmpty()) {
             Optional<Cookie> authCookie = cookies.stream()
