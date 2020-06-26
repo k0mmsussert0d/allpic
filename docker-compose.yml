@@ -19,7 +19,7 @@ services:
     depends_on:
       - db
   frontend:
-    build: ./allpic-frontend/allpic
+    build: ./allpic-frontend
     environment:
       - API_URL=http://localhost/api
     depends_on:
