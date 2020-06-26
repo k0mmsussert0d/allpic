@@ -77,7 +77,7 @@ public class ImageControllerImpl implements ImageController {
     @Override
     public ResponseEntity<String> uploadImage(MultipartFile image, UploadImageDetails imageDetails, CustomUserDetails user) {
         String title = imageDetails.getTitle();
-        boolean isPublic = imageDetails.isPublic;
+        boolean isPublic = imageDetails.isPublic();
 
         Optional<CustomUserDetails> uploaderDetails = Optional.ofNullable(user);
         UserDTO uploaderDto = null;
