@@ -19,7 +19,7 @@ POST {{host}}/auth/login
 Content-Type: application/json
 
 {
-  "username": "foo1",
+  "username": "admin",
   "password": "bar222"
 }
 
@@ -29,7 +29,7 @@ Content-Type: application/json
 ### Success: 200
 ### Failure: 401
 GET {{host}}/auth/authenticate
-Cookie: authentication=-z9zjg4c71xu9-bqbbe4axudgq
+Cookie: authentication={{session_id}}
 
 ###
 
@@ -47,9 +47,9 @@ POST http://{{host}}/img/upload
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 
 --WebAppBoundary
-Content-Disposition: form-data; name="file"; filename="test.jpg"
+Content-Disposition: form-data; name="file"; filename="test.png"
 
-< ./../../test.jpg
+< ./../../img/1522881821450bf6aScreen-Shot-2018-04-04-at-3.41.25-PM-940x641.png
 --WebAppBoundary
 Content-Disposition: form-data; name="metadata"
 Content-Type: application/json
@@ -67,6 +67,18 @@ Content-Type: application/json
 ### Failure: 404
 ### Error: 503
 GET http://{{host}}/img/i/{{token}}
+
+### Get an image thumbnail
+### Success: 200 + file stream
+### Failure: 404
+### Error: 503
+GET http://{{host}}/img/i/thumb/NbS5D
+
+###
+
+### Get list of latest images
+### Success: 200
+GET http://{{host}}/img/recent
 
 ###
 
@@ -92,10 +104,11 @@ GET http://{{host}}/user/{{username}}
 
 ###
 
-### Get list of user images
+### Get list of self-uploaded user's images
 ### Success: 200 + json
 ### Failure: 404
-GET http://{{host}}/user/foo1/images
+GET http://{{host}}/user/images
+Cookie: authentication={{session_id}}
 
 ###
 
@@ -114,3 +127,40 @@ Cookie: authentication={{session_id}}
 ### Failure (not enough permissions): 403
 DELETE http://{{host}}/comment/{{comment_id}}
 Cookie: authentication={{session_id}}
+
+### Get list of users (all)
+
+### Success: 200 + list
+### Failure: 401 (no access)
+### Failure: 404 (no users)
+GET http://{{host}}/user/
+Cookie: authentication={{admin_session_id}}
+
+###
+
+### Get list of moderators (as an admin)
+### Success: 200 + list
+### Failure: 401 (no access)
+### Failure: 404 (no mods)
+GET http://{{host}}/mod/
+Cookie: authentication={{admin_session_id}}
+
+###
+
+### Assign user mod role
+### Success: 200
+### Failure: 400 (already with mod role)
+### Failure: 401 (no access)
+### Failure: 404 (no such user)
+PUT http://{{host}}/mod/{{userid}}
+Cookie: authentication={{admin_session_id}}
+
+###
+
+### Remove mod role from user
+### Success: 200
+### Failure: 400 (no mod role on this user)
+### Failure: 401 (no access)
+### Failure: 404 (no such user)
+DELETE http://{{host}}/mod/{{userid}}
+Cookie: authentication={{admin_session_id}}

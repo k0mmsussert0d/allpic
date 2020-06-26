@@ -31,6 +31,11 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
+    public List<Image> findAllOrderByUploadedTimeDesc() {
+        return imageRepository.findAllByOrderByUploadTimeDesc().orElse(null);
+    }
+
+    @Override
     public Image save(Image image) {
         return imageRepository.save(image);
     }

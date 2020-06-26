@@ -59,6 +59,19 @@ public class ImageDTOServiceImpl implements ImageDTOService {
     }
 
     @Override
+    public List<ImageDTO> findAllOrderByUploadedTimeDesc() {
+        Optional<List<Image>> images = Optional.ofNullable(imageService.findAllOrderByUploadedTimeDesc());
+
+        if (images.isPresent()) {
+            Type listType = new TypeToken<List<ImageDTO>>(){}.getType();
+
+            return modelMapper.map(images.get(), listType);
+        }
+
+        return null;
+    }
+
+    @Override
     public ImageDTO save(ImageDTO image) {
         Image savedImage = imageService.save(modelMapper.map(image, Image.class));
         return modelMapper.map(savedImage, ImageDTO.class);

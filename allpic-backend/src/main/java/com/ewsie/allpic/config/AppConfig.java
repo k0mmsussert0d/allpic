@@ -22,4 +22,9 @@ public class AppConfig {
     String imgTokenChars;
 
     String corsHosts;
+
+    int thumbSize;
+
+    int mostRecentImagesCount;
+
 }
