@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public interface ImageController {
     ResponseEntity<String> uploadImage(
             @RequestPart("file") MultipartFile image,
             @RequestPart("metadata") UploadImageDetails imageDetails,
-            @AuthenticationPrincipal @Nullable CustomUserDetails user
+            @ApiIgnore @AuthenticationPrincipal @Nullable CustomUserDetails user
     );
 
     @GetMapping("/recent")

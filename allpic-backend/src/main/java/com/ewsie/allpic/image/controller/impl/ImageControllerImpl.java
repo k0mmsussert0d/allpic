@@ -22,6 +22,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.io.IOException;
 import java.util.List;
@@ -75,7 +76,7 @@ public class ImageControllerImpl implements ImageController {
     }
 
     @Override
-    public ResponseEntity<String> uploadImage(MultipartFile image, UploadImageDetails imageDetails, CustomUserDetails user) {
+    public ResponseEntity<String> uploadImage(MultipartFile image, UploadImageDetails imageDetails, @ApiIgnore CustomUserDetails user) {
         String title = imageDetails.getTitle();
         boolean isPublic = imageDetails.isPublic();
 
