@@ -1,8 +1,9 @@
 package com.ewsie.allpic.user.security.service;
 
+import com.ewsie.allpic.user.model.UserDTO;
 import org.springframework.http.ResponseEntity;
 
 public interface UserRegisterService {
 
-    ResponseEntity<String> register(String username, String password, String email);
+    ResponseEntity<UserDTO> register(String username, String password, String email);
 }

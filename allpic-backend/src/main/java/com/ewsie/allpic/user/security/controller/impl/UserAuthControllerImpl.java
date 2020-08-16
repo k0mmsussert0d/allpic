@@ -3,7 +3,7 @@ package com.ewsie.allpic.user.security.controller.impl;
 import com.ewsie.allpic.user.model.AuthenticatedUserDTO;
 import com.ewsie.allpic.user.model.request.UserRegisterRequestBody;
 import com.ewsie.allpic.user.security.service.UserLoginService;
-import com.ewsie.allpic.user.security.controller.UserAuth;
+import com.ewsie.allpic.user.security.controller.UserAuthController;
 import com.ewsie.allpic.user.model.CustomUserDetails;
 import com.ewsie.allpic.user.model.request.UserLoginRequestBody;
 import com.ewsie.allpic.user.security.service.UserRegisterService;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class UserAuthImpl implements UserAuth {
+public class UserAuthControllerImpl implements UserAuthController {
 
     private final UserLoginService userLoginService;
     private final UserRegisterService userRegisterService;
@@ -40,15 +40,5 @@ public class UserAuthImpl implements UserAuth {
                         .role(roles)
                         .build()
         );
-    }
-
-    @Override
-    public ResponseEntity<String> register(UserRegisterRequestBody requestBody) {
-
-        String username = requestBody.getUsername();
-        String password = requestBody.getPassword();
-        String email = requestBody.getEmail();
-
-        return userRegisterService.register(username, password, email);
     }
 }

@@ -11,18 +11,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import springfox.documentation.annotations.ApiIgnore;
 
 
 @RequestMapping("/auth")
-public interface UserAuth {
+public interface UserAuthController {
 
     @PostMapping("/login")
     ResponseEntity<String> login(@RequestBody UserLoginRequestBody requestBody);
 
     @PreAuthorize("isFullyAuthenticated()")
-    @GetMapping("/authenticate")
-    ResponseEntity<AuthenticatedUserDTO> authenticate(@AuthenticationPrincipal CustomUserDetails user);
-
-    @PostMapping("/register")
-    ResponseEntity<String> register(@RequestBody UserRegisterRequestBody requestBody);
+    @GetMapping("/")
+    ResponseEntity<AuthenticatedUserDTO> authenticate(@AuthenticationPrincipal @ApiIgnore CustomUserDetails user);
 }

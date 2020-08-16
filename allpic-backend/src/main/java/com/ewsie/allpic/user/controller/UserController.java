@@ -9,6 +9,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
@@ -24,5 +25,5 @@ public interface UserController {
 
     @GetMapping("/images")
     @PreAuthorize("isFullyAuthenticated()")
-    ResponseEntity<List<ImageDTO>> userImages(@AuthenticationPrincipal CustomUserDetails userDetails);
+    ResponseEntity<List<ImageDTO>> userImages(@AuthenticationPrincipal @ApiIgnore CustomUserDetails userDetails);
 }

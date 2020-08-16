@@ -6,7 +6,7 @@ import com.ewsie.allpic.user.role.RoleDTO;
 import java.util.List;
 
 public interface UserDTOService {
-    void create(UserDTO userDTO);
+    UserDTO create(UserDTO userDTO);
 
     List<UserDTO> getAll();
 
