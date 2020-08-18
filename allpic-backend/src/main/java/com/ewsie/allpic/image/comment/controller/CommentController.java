@@ -23,7 +23,7 @@ public interface CommentController {
     @ApiOperation(value = "Posts a comment of the image")
     @PostMapping("/{imageToken}")
     @PreAuthorize("isFullyAuthenticated()")
-    ResponseEntity<String> addComment(
+    ResponseEntity<CommentDTO> addComment(
             @PathVariable String imageToken,
             @AuthenticationPrincipal CustomUserDetails author,
             @RequestBody String message
