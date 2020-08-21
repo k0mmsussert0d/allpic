@@ -1,6 +1,5 @@
 package com.ewsie.allpic.user.role;
 
-import com.ewsie.allpic.user.role.utils.CustomRoleDTORoleNameSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -17,4 +16,12 @@ public class RoleDTO {
 
     int id;
     String role;
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) { return true; }
+        if (!(o instanceof RoleDTO)) { return false; }
+        RoleDTO other = (RoleDTO) o;
+        return this.id == other.id && this.role.equals(other.role);
+    }
 }
