@@ -27,4 +27,6 @@ public class AppConfig {
 
     int mostRecentImagesCount;
 
+    String environment;
+
 }
