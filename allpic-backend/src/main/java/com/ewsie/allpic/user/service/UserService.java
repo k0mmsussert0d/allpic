@@ -6,7 +6,7 @@ import com.ewsie.allpic.user.role.Role;
 import java.util.List;
 
 public interface UserService {
-    void create(User user);
+    User create(User user);
 
     List<User> getAll();
 

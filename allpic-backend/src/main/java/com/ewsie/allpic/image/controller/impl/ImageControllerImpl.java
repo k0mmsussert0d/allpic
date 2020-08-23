@@ -22,6 +22,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.io.IOException;
 import java.util.List;
@@ -75,7 +77,7 @@ public class ImageControllerImpl implements ImageController {
     }
 
     @Override
-    public ResponseEntity<String> uploadImage(MultipartFile image, UploadImageDetails imageDetails, CustomUserDetails user) {
+    public ResponseEntity<ImageDTO> uploadImage(MultipartFile image, UploadImageDetails imageDetails, CustomUserDetails user) {
         String title = imageDetails.getTitle();
         boolean isPublic = imageDetails.isPublic();
 
@@ -85,19 +87,16 @@ public class ImageControllerImpl implements ImageController {
             uploaderDto = uploaderDetails.get().getUser();
         }
 
-        String response;
         try {
             ImageDTO savedImage = saveImageService.saveImage(image, title, isPublic, uploaderDto);
-            response = new ObjectMapper().writeValueAsString(savedImage);
+            return ResponseEntity.status(HttpStatus.OK).body(savedImage);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         } catch (SdkClientException | IOException e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE);
         }
-
-        return ResponseEntity.ok(response);
     }
 
     @Override

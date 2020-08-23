@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -23,13 +24,19 @@ public class UserRegisterServiceImpl implements UserRegisterService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public ResponseEntity<String> register(String username, String password, String email) {
+    public ResponseEntity<UserDTO> register(String username, String password, String email) {
         if (!isUsernameAvailable(username)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Username " + username + " is already used");
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT, "Username " + username + " is already in use"
+            );
         } else if (!isEmailNotUsed(email)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Username with e-mail address " + email + " is already registered");
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT, "Username with e-mail address " + email + " is already registered"
+            );
         } else if (!isPasswordValid(password)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Used password does not meet requirements");
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Password does not meet requirements"
+            );
         }
 
         RoleDTO defaultRole = roleDTOService.findByRoleName("USER");
@@ -43,9 +50,7 @@ public class UserRegisterServiceImpl implements UserRegisterService {
                 .role(defaultRole)
                 .build();
 
-        userDTOService.create(newUser);
-
-        return ResponseEntity.ok("Successfully registered user " + username + " with e-mail " + email);
+        return ResponseEntity.ok(userDTOService.create(newUser));
     }
 
     private boolean isUsernameAvailable(String username) {

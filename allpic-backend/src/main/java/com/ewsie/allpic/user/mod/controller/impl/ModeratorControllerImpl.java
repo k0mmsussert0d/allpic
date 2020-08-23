@@ -1,22 +1,16 @@
 package com.ewsie.allpic.user.mod.controller.impl;
 
 import com.ewsie.allpic.user.mod.controller.ModeratorController;
-import com.ewsie.allpic.user.model.User;
 import com.ewsie.allpic.user.model.UserDTO;
-import com.ewsie.allpic.user.role.Role;
 import com.ewsie.allpic.user.role.RoleDTO;
 import com.ewsie.allpic.user.role.service.RoleDTOService;
-import com.ewsie.allpic.user.role.service.RoleService;
 import com.ewsie.allpic.user.service.UserDTOService;
-import com.ewsie.allpic.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -25,72 +19,69 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ModeratorControllerImpl implements ModeratorController {
 
-    private final ModelMapper modelMapper;
-    private final RoleService roleService;
-    private final UserService userService;
+    private final RoleDTOService roleDTOService;
+    private final UserDTOService userDTOService;
 
     @Override
     public ResponseEntity<List<UserDTO>> getListOfMods() {
-        Role modRole = getModRole();
-        List<User> mods = userService.findUsersByRole(modRole);
+        RoleDTO modRole = getModRole();
+        List<UserDTO> mods = userDTOService.findUsersByRole(modRole);
 
         if (mods == null || mods.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
         }
 
-        Type listType = new TypeToken<List<UserDTO>>(){}.getType();
-
-        return ResponseEntity.ok(modelMapper.map(mods, listType));
+        return ResponseEntity.status(HttpStatus.OK).body(mods);
     }
 
     @Override
-    public ResponseEntity<Void> addMod(Long userId) {
-        Role modRole = getModRole();
-        Role adminRole = getAdminRole();
+    public ResponseEntity<UserDTO> addMod(Long userId) {
+        RoleDTO modRole = getModRole();
+        RoleDTO adminRole = getAdminRole();
 
-        Optional<User> user = Optional.ofNullable(userService.findById(userId));
+        Optional<UserDTO> user = Optional.ofNullable(userDTOService.findById(userId));
 
         if (user.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        } else if (user.get().getRole() == modRole || user.get().getRole() == adminRole) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with ID " + userId + " does not exists");
+        } else if (user.get().getRole().equals(modRole) || user.get().getRole().equals(adminRole)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User with ID " + userId + " is already a mod or an admin");
         }
 
         user.get().setRole(modRole);
-        userService.create(user.get());
+        userDTOService.create(user.get());
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.OK).body(user.get());
     }
 
     @Override
-    public ResponseEntity<Void> removeMod(Long userId) {
-        Role userRole = getUserRole();
-        Role modRole = getModRole();
-        Role adminRole = getAdminRole();
+    public ResponseEntity<UserDTO> removeMod(Long userId) {
+        RoleDTO userRole = getUserRole();
+        RoleDTO modRole = getModRole();
+        RoleDTO adminRole = getAdminRole();
 
-        Optional<User> user = Optional.ofNullable(userService.findById(userId));
+        Optional<UserDTO> user = Optional.ofNullable(userDTOService.findById(userId));
 
         if (user.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        } else if (user.get().getRole() != modRole || user.get().getRole() == adminRole) {
+        } else if (!user.get().getRole().equals(modRole)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
         user.get().setRole(userRole);
-        userService.create(user.get());
+        userDTOService.create(user.get());
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.OK).body(user.get());
     }
 
-    private Role getUserRole() {
-        return roleService.findByRoleName("USER");
+    private RoleDTO getUserRole() {
+        return roleDTOService.findByRoleName("USER");
     }
 
-    private Role getModRole() {
-        return roleService.findByRoleName("MOD");
+    private RoleDTO getModRole() {
+        return roleDTOService.findByRoleName("MOD");
     }
 
-    private Role getAdminRole() {
-        return roleService.findByRoleName("ADMIN");
+    private RoleDTO getAdminRole() {
+        return roleDTOService.findByRoleName("ADMIN");
     }
 }

@@ -12,8 +12,6 @@ import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Type;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,8 +23,9 @@ public class UserDTOServiceImpl implements UserDTOService {
     private final ModelMapper modelMapper;
 
     @Override
-    public void create(UserDTO userDTO) {
-        userService.create(modelMapper.map(userDTO, User.class));
+    public UserDTO create(UserDTO userDTO) {
+        User target = modelMapper.map(userDTO, User.class);
+        return modelMapper.map(userService.create(target), UserDTO.class);
     }
 
     @Override

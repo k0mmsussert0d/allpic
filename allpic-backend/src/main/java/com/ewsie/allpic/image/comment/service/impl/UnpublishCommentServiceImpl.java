@@ -1,6 +1,8 @@
-package com.ewsie.allpic.image.comment.service;
+package com.ewsie.allpic.image.comment.service.impl;
 
 import com.ewsie.allpic.image.comment.model.Comment;
+import com.ewsie.allpic.image.comment.service.CommentService;
+import com.ewsie.allpic.image.comment.service.UnpublishCommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
