@@ -33,7 +33,7 @@ class UserRepositoryTest {
         Optional<User> found = userRepository.findByUsername("foo");
 
         // then
-        assertThat(found.isPresent());
+        assertThat(found.isPresent()).isTrue();
         assertThat(found.get().getUsername())
                 .isEqualTo(foo.getUsername());
     }
@@ -49,7 +49,7 @@ class UserRepositoryTest {
         Optional<User> found = userRepository.findByEmail("email@example.com");
 
         // then
-        assertThat(found.isPresent());
+        assertThat(found.isPresent()).isTrue();
         assertThat(found.get().getEmail())
                 .isEqualTo(foo.getEmail());
     }
@@ -80,7 +80,7 @@ class UserRepositoryTest {
         Optional<List<User>> found = userRepository.findUsersByRole(role);
 
         // then
-        assertThat(found.isPresent());
+        assertThat(found.isPresent()).isTrue();
         assertThat(found.get().contains(user1));
         assertThat(found.get().contains(user2));
     }
