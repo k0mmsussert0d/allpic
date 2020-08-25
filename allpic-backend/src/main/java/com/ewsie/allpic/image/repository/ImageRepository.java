@@ -12,7 +12,7 @@ public interface ImageRepository extends JpaRepository<Image, Long> {
 
     Optional<Image> findByToken(String token);
 
-    Optional<List<Image>> findAllByUploader(User uploader);
+    List<Image> findAllByUploader(User uploader);
 
-    Optional<List<Image>> findAllByOrderByUploadTimeDesc();
+    List<Image> findAllByOrderByUploadTimeDesc();
 }

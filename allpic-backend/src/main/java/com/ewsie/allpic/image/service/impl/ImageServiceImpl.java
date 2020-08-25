@@ -27,12 +27,12 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public List<Image> findAllUploadedBy(User uploader) {
-        return imageRepository.findAllByUploader(uploader).orElse(null);
+        return imageRepository.findAllByUploader(uploader);
     }
 
     @Override
     public List<Image> findAllOrderByUploadedTimeDesc() {
-        return imageRepository.findAllByOrderByUploadTimeDesc().orElse(null);
+        return imageRepository.findAllByOrderByUploadTimeDesc();
     }
 
     @Override
