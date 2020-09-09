@@ -7,7 +7,6 @@ import com.ewsie.allpic.image.service.ImageService;
 import com.ewsie.allpic.user.model.User;
 import com.ewsie.allpic.user.model.UserDTO;
 import com.ewsie.allpic.user.service.UserService;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
@@ -19,7 +18,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -96,7 +94,7 @@ class ImageDTOServiceImplTest {
     }
 
     @Test
-    public void whenFindAllOrderByUploadedTimeDesc() {
+    public void whenFindAllOrderByUploadedTimeDesc_thenReturnImages() {
         // given
         Image image1 = getSampleImage("TOKEN1");
         Image image2 = getSampleImage("TOKEN2");
@@ -118,6 +116,28 @@ class ImageDTOServiceImplTest {
                 .extracting(imageDTO -> modelMapper.map(imageDTO, Image.class))
                 .usingElementComparatorIgnoringFields("id")
                 .containsExactly(image1, image2, image3);
+    }
+
+    @Test
+    public void whenSave_thenReturnImage() {
+        // given
+        ImageDTO imageDTO = ImageDTO.builder()
+                .token("TOKEN")
+                .isPublic(true)
+                .isActive(true)
+                .uploadTime(LocalDateTime.now())
+                .build();
+
+        // when
+        ImageDTO saved = imageDTOService.save(imageDTO);
+
+        // then
+        assertThat(saved)
+                .as("Should have same properties")
+                .isEqualToIgnoringGivenFields(imageDTO, "id");
+        assertThat(saved.getId())
+                .as("Should have been assigned ID")
+                .isNotNull();
     }
 
     private Image getSampleImage(String token) {
