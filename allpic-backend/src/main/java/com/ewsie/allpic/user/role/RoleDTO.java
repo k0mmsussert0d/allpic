@@ -14,7 +14,7 @@ import static lombok.AccessLevel.PRIVATE;
 @JsonSerialize
 public class RoleDTO {
 
-    int id;
+    Long id;
     String roleName;
 
     @Override
@@ -22,6 +22,6 @@ public class RoleDTO {
         if (o == this) { return true; }
         if (!(o instanceof RoleDTO)) { return false; }
         RoleDTO other = (RoleDTO) o;
-        return this.id == other.id && this.roleName.equals(other.roleName);
+        return this.id.equals(other.id) && this.roleName.equals(other.roleName);
     }
 }
