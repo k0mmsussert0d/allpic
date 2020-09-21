@@ -30,6 +30,5 @@ public interface UserController {
     @ApiOperation(value = "Returns list of images uploaded by user authenticated with session cookie")
     @GetMapping("/images")
     @PreAuthorize("isFullyAuthenticated()")
-    ResponseEntity<List<ImageDTO>> userImages(@AuthenticationPrincipal CustomUserDetails userDetails
-    );
+    ResponseEntity<List<ImageDTO>> userImages(@AuthenticationPrincipal CustomUserDetails userDetails);
 }
