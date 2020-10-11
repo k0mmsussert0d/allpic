@@ -6,14 +6,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
+import java.io.InputStream;
 
 
 public interface SaveImageService {
 
     ImageDTO saveImage(
-            MultipartFile image,
-            String title,
-            @NotNull boolean isPublic,
+            InputStream imageFileInputStream,
+            String imageFilename, String title,
+            boolean isPublic,
             UserDTO uploader
     ) throws IllegalArgumentException, IOException;
 }

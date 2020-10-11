@@ -12,7 +12,6 @@ import com.ewsie.allpic.image.service.SaveImageService;
 import com.ewsie.allpic.image.service.UnpublishImageService;
 import com.ewsie.allpic.user.model.CustomUserDetails;
 import com.ewsie.allpic.user.model.UserDTO;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.core.io.InputStreamResource;
@@ -23,7 +22,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
-import springfox.documentation.annotations.ApiIgnore;
 
 import java.io.IOException;
 import java.util.List;
@@ -88,7 +86,7 @@ public class ImageControllerImpl implements ImageController {
         }
 
         try {
-            ImageDTO savedImage = saveImageService.saveImage(image, title, isPublic, uploaderDto);
+            ImageDTO savedImage = saveImageService.saveImage(image.getInputStream(), image.getOriginalFilename(), title, isPublic, uploaderDto);
             return ResponseEntity.status(HttpStatus.OK).body(savedImage);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
