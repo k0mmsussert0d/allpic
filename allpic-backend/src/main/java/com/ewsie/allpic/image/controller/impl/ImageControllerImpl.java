@@ -109,13 +109,12 @@ public class ImageControllerImpl implements ImageController {
     }
 
     @Override
-    public ResponseEntity<Void> removeImage(String token) {
+    public ResponseEntity<ImageDTO> removeImage(String token) {
         try {
-            unpublishImageService.hideImageByToken(token);
+            ImageDTO imageDTO = unpublishImageService.hideImageByToken(token);
+            return ResponseEntity.status(HttpStatus.OK).body(imageDTO);
         } catch(NullPointerException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-
-        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
