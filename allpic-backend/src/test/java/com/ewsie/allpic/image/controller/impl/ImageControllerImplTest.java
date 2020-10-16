@@ -1,12 +1,14 @@
 package com.ewsie.allpic.image.controller.impl;
 
 import com.amazonaws.SdkClientException;
+import com.ewsie.allpic.image.model.Image;
 import com.ewsie.allpic.image.model.ImageDTO;
 import com.ewsie.allpic.image.model.ImageDTOWithContent;
 import com.ewsie.allpic.image.model.UploadImageDetails;
 import com.ewsie.allpic.image.service.ImageDTOService;
 import com.ewsie.allpic.image.service.LoadImageService;
 import com.ewsie.allpic.image.service.SaveImageService;
+import com.ewsie.allpic.image.service.UnpublishImageService;
 import com.ewsie.allpic.user.controller.impl.SpringSecurityForUserControllerImplTestConfig;
 import com.ewsie.allpic.user.model.UserDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,6 +25,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.multipart.MultipartFile;
@@ -58,6 +61,9 @@ class ImageControllerImplTest {
 
     @MockBean
     ImageDTOService imageDTOService;
+
+    @MockBean
+    UnpublishImageService unpublishImageService;
 
     @Test
     public void whenGetImage_andImageDoesNotExist_shouldReturnNotFoundError() throws Exception {
@@ -392,6 +398,68 @@ class ImageControllerImplTest {
                                 "  }\n" +
                                 "]"
                 ));
+    }
+
+    @Test
+    public void whenRemoveImage_andUserIsAnonymous_thenReturnUnauthorizedError() throws Exception {
+
+        mockMvc.perform(delete("/img/" + TOKEN))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser(roles = {"MOD"})
+    public void whenRemoveImage_andUserHasRoleMod_thenReturnRemovedImage() throws Exception {
+
+        ImageDTO imageDTO = getSampleImage(1L, TOKEN);
+
+        Mockito.when(unpublishImageService.hideImageByToken(imageDTO.getToken()))
+                .thenReturn(imageDTO);
+
+        mockMvc.perform(delete("/img/" + TOKEN))
+                .andExpect(status().isOk())
+                .andExpect(content().json("{" +
+                        "  \"id\": 1," +
+                        "  \"isActive\": true," +
+                        "  \"isPublic\": true," +
+                        "  \"title\": null," +
+                        "  \"token\": \"ABCDEF\"," +
+                        "  \"uploadTime\": \"2020-01-01T12:00:00\"," +
+                        "  \"uploader\": null" +
+                        "}"));
+    }
+
+    @Test
+    @WithMockUser(roles = {"ADMIN"})
+    public void whenRemoveImage_andUserHasRoleAdmin_thenReturnRemovedImage() throws Exception {
+
+        ImageDTO imageDTO = getSampleImage(1L, TOKEN);
+
+        Mockito.when(unpublishImageService.hideImageByToken(imageDTO.getToken()))
+                .thenReturn(imageDTO);
+
+        mockMvc.perform(delete("/img/" + TOKEN))
+                .andExpect(status().isOk())
+                .andExpect(content().json("{" +
+                        "  \"id\": 1," +
+                        "  \"isActive\": true," +
+                        "  \"isPublic\": true," +
+                        "  \"title\": null," +
+                        "  \"token\": \"ABCDEF\"," +
+                        "  \"uploadTime\": \"2020-01-01T12:00:00\"," +
+                        "  \"uploader\": null" +
+                        "}"));
+    }
+
+    @Test
+    @WithMockUser(roles = {"ADMIN"})
+    public void whenRemoveImage_andImageDoesNotExist_thenReturnNotFoundError() throws Exception {
+
+        Mockito.when(unpublishImageService.hideImageByToken(TOKEN))
+                .thenThrow(NullPointerException.class);
+
+        mockMvc.perform(delete("/img/" + TOKEN))
+                .andExpect(status().isNotFound());
     }
 
     private static Stream<Arguments> getSampleFilesAndTheirMimeTypes() {
