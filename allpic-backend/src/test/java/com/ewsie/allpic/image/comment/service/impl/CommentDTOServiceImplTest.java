@@ -43,13 +43,9 @@ class CommentDTOServiceImplTest {
     }
 
     @Test
-    public void whenFindById_thenReturnComment() {
+    public void whenFindById_andCommentExists_thenReturnComment() {
         // given
         Comment comment = getSampleComment();
-        User user = getSampleUser("username");
-        comment.setAuthor(user);
-
-        userService.create(user);
         Comment saved = commentService.save(comment);
 
         // when
@@ -58,13 +54,14 @@ class CommentDTOServiceImplTest {
         // then
         assertThat(found)
                 .as("Should have same properties as saved comment")
-                .isEqualToComparingFieldByField(saved);
+                .isEqualToIgnoringGivenFields(saved, "author");
     }
 
     @Test
     public void whenSave_thenReturnComment() {
         // given
         UserDTO userDTO = UserDTO.builder()
+                .id(1L)
                 .username("username")
                 .email("username@example.com")
                 .registerTime(LocalDateTime.now())
@@ -72,6 +69,7 @@ class CommentDTOServiceImplTest {
                 .build();
         UserDTO savedUser = userDTOService.create(userDTO);
         CommentDTO commentDTO = CommentDTO.builder()
+                .id(2L)
                 .isPublic(true)
                 .message("message")
                 .timeAdded(LocalDateTime.now())
@@ -94,6 +92,7 @@ class CommentDTOServiceImplTest {
 
     private Comment getSampleComment() {
         Comment comment = new Comment();
+        comment.setId(2L);
         comment.setMessage("sample message");
         comment.setTimeAdded(LocalDateTime.now());
 
@@ -102,6 +101,7 @@ class CommentDTOServiceImplTest {
 
     private User getSampleUser(String username) {
         User user = new User();
+        user.setId(1L);
         user.setUsername(username);
 
         //   filling mandatory NOT NULL fields

@@ -124,7 +124,7 @@ class UserRegisterControllerImplTest {
                 .andExpect(content().json(
                         "{\n" +
                                 "  " +
-                                "\"id\": null,\n" +
+                                "\"id\": 1,\n" +
                                 "  \"username\": \"username\",\n" +
                                 "  \"email\": \"username@example.com\",\n" +
                                 "  \"registerTime\": \"2020-01-01T12:00:00\",\n" +
