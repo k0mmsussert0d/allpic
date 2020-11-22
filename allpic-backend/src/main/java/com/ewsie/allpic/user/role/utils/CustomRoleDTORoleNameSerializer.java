@@ -20,6 +20,6 @@ public class CustomRoleDTORoleNameSerializer
 
     @Override
     public void serialize(RoleDTO roleDTO, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
-        jsonGenerator.writeString(roleDTO.getRole());
+        jsonGenerator.writeString(roleDTO.getRoleName());
     }
 }

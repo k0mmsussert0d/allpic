@@ -14,9 +14,7 @@ import com.ewsie.allpic.image.service.SaveImageService;
 import com.ewsie.allpic.user.model.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.NotNull;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -33,16 +31,16 @@ public class SaveImageServiceImpl implements SaveImageService {
     private final ImageThumbnailService imageThumbnailService;
 
     @Override
-    public ImageDTO saveImage(MultipartFile image, String title, @NotNull boolean isPublic, UserDTO uploader)
+    public ImageDTO saveImage(InputStream imageFileInputStream, String imageFilename, String title, boolean isPublic, UserDTO uploader)
             throws IllegalArgumentException, SdkClientException, IOException {
 
         String token = getUniqueImageToken();
-        String mimeType = getFileMimeType(image.getOriginalFilename());
+        String mimeType = getFileMimeType(imageFilename);
 
         ImageDTO savedImageDTO = getPersistedImageDto(title, isPublic, uploader, token);
-        File thumbnailImage = imageThumbnailService.generateThumbnail(image.getInputStream(), token, getFileExtension(image.getOriginalFilename()));
+        File thumbnailImage = imageThumbnailService.generateThumbnail(imageFileInputStream, token, getFileExtension(imageFilename));
 
-        uploadImageToS3(image.getInputStream(), token, mimeType);
+        uploadImageToS3(imageFileInputStream, token, mimeType);
         uploadImageToS3(new FileInputStream(thumbnailImage), token + "_thumb", mimeType);
         thumbnailImage.deleteOnExit();
 

@@ -19,7 +19,7 @@ public class CustomUserDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         RoleDTO role = user.getRole();
         Set<GrantedAuthority> rolesSet = new HashSet<>();
-        rolesSet.add(new SimpleGrantedAuthority("ROLE_" + role.getRole()));
+        rolesSet.add(new SimpleGrantedAuthority("ROLE_" + role.getRoleName()));
         return rolesSet;
     }
 

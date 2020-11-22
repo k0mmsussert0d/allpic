@@ -12,8 +12,8 @@ import java.time.format.DateTimeFormatter;
 public class CustomLocalDateTimeSerializer
         extends StdSerializer<LocalDateTime> {
 
-    private static DateTimeFormatter formatter =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private static final DateTimeFormatter formatter =
+            DateTimeFormatter.ISO_DATE_TIME;
 
     public CustomLocalDateTimeSerializer() {
         this(null);
@@ -28,7 +28,7 @@ public class CustomLocalDateTimeSerializer
             LocalDateTime value,
             JsonGenerator gen,
             SerializerProvider arg2)
-            throws IOException, JsonProcessingException {
+            throws IOException {
 
         gen.writeString(formatter.format(value));
     }

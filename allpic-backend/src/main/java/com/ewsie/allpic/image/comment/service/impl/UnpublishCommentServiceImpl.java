@@ -15,7 +15,7 @@ public class UnpublishCommentServiceImpl implements UnpublishCommentService {
     private final CommentService commentService;
 
     @Override
-    public void unpublishCommentById(Long id) throws NullPointerException {
+    public void unpublishCommentById(Long id) throws NullPointerException {  // TODO: improve this method. Return removed entity details
         Optional<Comment> comment = Optional.ofNullable(commentService.findById(id));
         if (comment.isEmpty()) {
             throw new NullPointerException("Comment with id " + id + " not found");

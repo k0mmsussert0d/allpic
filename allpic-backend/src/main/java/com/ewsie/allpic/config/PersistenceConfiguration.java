@@ -20,12 +20,10 @@ public class PersistenceConfiguration {
         TypeMap<ImageDTO, ImagePreviewDetails> imageDTOToImagePreviewDetails =
                 modelMapper.createTypeMap(ImageDTO.class, ImagePreviewDetails.class);
 
-        Converter<String, String> tokenToThumbnailURL = ctx -> String.format("img/i/thumb/%s", ctx.getSource());
 
         imageDTOToImagePreviewDetails.addMappings(mapper -> {
             mapper.map(ImageDTO::getToken, ImagePreviewDetails::setToken);
             mapper.map(ImageDTO::getTitle, ImagePreviewDetails::setTitle);
-            mapper.using(tokenToThumbnailURL).map(ImageDTO::getToken, ImagePreviewDetails::setThumbnail);
         });
 
         modelMapper.getConfiguration()

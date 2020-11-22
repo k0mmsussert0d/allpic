@@ -20,7 +20,7 @@ public interface UserAuthController {
 
     @ApiOperation(value = "Authenticates the user with username and password")
     @PostMapping("/login")
-    ResponseEntity<String> login(@RequestBody UserLoginRequestBody requestBody);
+    ResponseEntity<AuthenticatedUserDTO> login(@RequestBody UserLoginRequestBody requestBody);
 
     @ApiOperation(value = "Authenticates the user with session ID stored in 'authentication' cookie")
     @PreAuthorize("isFullyAuthenticated()")

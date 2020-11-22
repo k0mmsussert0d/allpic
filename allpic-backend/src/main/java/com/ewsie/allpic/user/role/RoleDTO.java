@@ -14,14 +14,14 @@ import static lombok.AccessLevel.PRIVATE;
 @JsonSerialize
 public class RoleDTO {
 
-    int id;
-    String role;
+    Long id;
+    String roleName;
 
     @Override
     public boolean equals(Object o) {
         if (o == this) { return true; }
         if (!(o instanceof RoleDTO)) { return false; }
         RoleDTO other = (RoleDTO) o;
-        return this.id == other.id && this.role.equals(other.role);
+        return this.id.equals(other.id) && this.roleName.equals(other.roleName);
     }
 }

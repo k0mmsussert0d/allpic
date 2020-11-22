@@ -27,4 +27,9 @@ public class AppConfig {
 
     int mostRecentImagesCount;
 
+    String environment;
+    
+    long cookieMaxAge;
+    
+    boolean cookieSecure;
 }

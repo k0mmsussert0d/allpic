@@ -28,7 +28,7 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public Session findByIdentifier(String identifier) {
-        return sessionRepository.findBySessionIdentifier(identifier);
+        return sessionRepository.findBySessionIdentifier(identifier).orElse(null);
     }
 
     @Override
