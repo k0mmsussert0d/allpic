@@ -1,8 +1,0 @@
-<table>
-    <input [(ngModel)]="username" #ctrl="ngModel" required>
-    <button (click)="addMod(username)">Dodaj moderatora</button>
-    <tr *ngFor = "let user of users">
-        <td>{{user.username}}</td>
-        <td><button (click)="removeMod(user.id)"></button></td>
-    </tr>
-</table>
