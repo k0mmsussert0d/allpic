@@ -1,18 +1,17 @@
 import {Navbar} from "rbx";
 import {Link} from "react-router-dom";
-import React, {useContext} from "react";
+import React, {useContext, useState} from "react";
 import {AuthenticationContext} from "../contexts/AuthenticationContext";
+import {UseModalType} from "../hooks/useModal";
 
-const MenuBar = () => {
+const MenuBar = ({ loginModal, registerModal }: MenuBarProps): JSX.Element => {
 
   const auth = useContext(AuthenticationContext).authenticated;
 
   const loginRegisterOptions = () => {
     return (
       <>
-        <Link to="/login">
-          <Navbar.Item>Sign in</Navbar.Item>
-        </Link>
+        <Navbar.Item onClick={() => loginModal.toggle()}>Sign in</Navbar.Item>
         <Link to="/register">
           <Navbar.Item>Sign up</Navbar.Item>
         </Link>
@@ -48,5 +47,10 @@ const MenuBar = () => {
     </Navbar>
   );
 };
+
+export interface MenuBarProps {
+  loginModal: UseModalType,
+  registerModal: UseModalType
+}
 
 export default MenuBar;

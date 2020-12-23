@@ -7,15 +7,22 @@ import MenuBar from "./components/MenuBar";
 import {AuthenticationContextProvider} from "./contexts/AuthenticationContext";
 import {APIMethods} from "./services/ApiActions";
 import Upload from "./views/Upload";
+import useModal from "./hooks/useModal";
+import LoginModal from "./components/LoginModal";
 
 
 const Allpic = () => {
+
+  const loginModal = useModal();
+  const registerModal = useModal();
+
   return (
     <AuthenticationContextProvider value={APIMethods.getAuth()}>
       <Router>
         <Content>
-          <MenuBar/>
+          <MenuBar loginModal={loginModal} registerModal={registerModal}/>
           <Switch>
+            {loginModal.isShowing ? <LoginModal modalHook={loginModal}/> : ''}
             <Route path="/upload">
               <Upload />
             </Route>
