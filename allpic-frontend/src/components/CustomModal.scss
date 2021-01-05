@@ -1,0 +1,38 @@
+.custom-modal {
+
+  &-close-button {
+    float: right;
+  }
+
+  &-flex {
+    display: flex;
+  }
+
+  &-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  &-content {
+    max-width: 80%;
+    margin: 10px auto; // centers content
+  }
+
+  &-button {
+
+  }
+}
+
+.modal-content {
+  top: 20vh;
+
+  @media screen and (max-width: 768px) {
+    width: calc(100vw - 40px);
+  }
+
+  @media screen and (min-width: 769px) {
+    width: 400px;
+  }
+}

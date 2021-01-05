@@ -2,25 +2,25 @@ import {Box, Button, Control, Field, Generic, Icon, Input, Modal} from "rbx";
 import React from "react";
 import {UseModalType} from "../hooks/useModal";
 
-import './LoginModal.scss';
+import './CustomModal.scss';
 
 const LoginModal = ({modalHook}: LoginModalProps) => {
 
   return (
-    <Generic as="div" class="login_modal_window">
-      <Modal.Background/>
+    <Generic as="div">
+      <Modal.Background onClick={() => modalHook.toggle()}/>
       <Modal.Content>
-        <Box>
-          <Generic as="div" class="login_modal_close">
+        <Box as="div" className="custom-modal-window">
+          <Generic as="div" className="custom-modal-close-button">
             <Button size="small" onClick={() => modalHook.toggle()}>X</Button>
           </Generic>
 
-          <Generic as="div" class="login_modal_content">
-            <Generic as="div" class="login_modal_header">
-              <Generic><h2>Sign in:</h2></Generic>
+          <Generic as="div" className="custom-modal-content">
+            <Generic as="div" className="custom-modal-header">
+              <Generic><h2>Log in:</h2></Generic>
             </Generic>
 
-            <Generic as="div" class="login_modal_middle">
+            <Generic as="div" className="custom-modal-middle">
               <Field>
                 <Control iconLeft iconRight>
                   <Input type="email" placeholder="Email"/>
@@ -41,9 +41,9 @@ const LoginModal = ({modalHook}: LoginModalProps) => {
 
 
               <Field>
-                <Control as="div" className="login_modal_button">
+                <Control as="div" className="custom-modal-button">
                   <Button.Group align="right">
-                    <Button color="success">Sign in</Button>
+                    <Button color="success">Log in</Button>
                   </Button.Group>
                 </Control>
               </Field>

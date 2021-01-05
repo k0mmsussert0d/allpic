@@ -1,8 +1,10 @@
-import {Navbar} from "rbx";
+import {Button, Navbar} from "rbx";
 import {Link} from "react-router-dom";
-import React, {useContext, useState} from "react";
+import React, {useContext} from "react";
 import {AuthenticationContext} from "../contexts/AuthenticationContext";
 import {UseModalType} from "../hooks/useModal";
+
+import './MenuBar.scss';
 
 const MenuBar = ({ loginModal, registerModal }: MenuBarProps): JSX.Element => {
 
@@ -11,10 +13,14 @@ const MenuBar = ({ loginModal, registerModal }: MenuBarProps): JSX.Element => {
   const loginRegisterOptions = () => {
     return (
       <>
-        <Navbar.Item onClick={() => loginModal.toggle()}>Sign in</Navbar.Item>
-        <Link to="/register">
-          <Navbar.Item>Sign up</Navbar.Item>
-        </Link>
+        <Navbar.Item>
+          <Button.Group>
+            <Button color="primary">
+              <strong>Sign up</strong>
+            </Button>
+            <Button color="light" onClick={() => loginModal.toggle()}>Log in</Button>
+          </Button.Group>
+        </Navbar.Item>
       </>
     );
   }
@@ -31,15 +37,16 @@ const MenuBar = ({ loginModal, registerModal }: MenuBarProps): JSX.Element => {
 
   return (
     <Navbar>
+      <Navbar.Brand>
+        <Link to="/">
+          <Navbar.Item>Home</Navbar.Item>
+        </Link>
+        <Link to="/upload">
+          <Navbar.Item>Upload</Navbar.Item>
+        </Link>
+        <Navbar.Burger />
+      </Navbar.Brand>
       <Navbar.Menu>
-        <Navbar.Segment align="start">
-          <Link to="/">
-            <Navbar.Item>Home</Navbar.Item>
-          </Link>
-          <Link to="/upload">
-            <Navbar.Item>Upload</Navbar.Item>
-          </Link>
-        </Navbar.Segment>
         <Navbar.Segment align="end">
           {auth ? logoutOption() : loginRegisterOptions()}
         </Navbar.Segment>
