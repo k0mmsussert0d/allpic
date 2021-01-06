@@ -12,11 +12,6 @@ export const APIMethods = {
           };
         }
       })
-      .catch(res => {
-        if (res.response.status !== 401) {
-          console.error('Error while checking authentication status');
-        }
-      });
 
     return {
       authenticated: false,

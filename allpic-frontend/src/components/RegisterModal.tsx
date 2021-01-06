@@ -1,8 +1,30 @@
 import {UseModalType} from "../hooks/useModal";
-import {Box, Button, Control, Field, Generic, Icon, Input, Modal} from "rbx";
-import React from "react";
+import {Box, Button, Control, Field, Generic, Icon, Modal} from "rbx";
+import React, {useState} from "react";
+import {useForm} from "react-hook-form";
+import ControlledInput from "./ControlledInput";
+
+interface RegisterFormData {
+  username: string,
+  email: string,
+  password: string,
+  repeatpassword: string
+}
 
 const RegisterModal = ({modalHook}: RegisterModalProps) => {
+
+  const { handleSubmit, control, errors, getValues } = useForm<RegisterFormData>({
+    defaultValues: {
+      username: '',
+      email: '',
+      password: '',
+      repeatpassword: ''
+    }
+  });
+
+  const performRegistration = (data: RegisterFormData): void => {
+    console.log(data);
+  }
 
   return (
     <Generic as="div">
@@ -19,50 +41,115 @@ const RegisterModal = ({modalHook}: RegisterModalProps) => {
             </Generic>
 
             <Generic as="div" className="custom-modal-middle">
-              <Field>
-                <Control iconLeft iconRight>
-                  <Input type="text" placeholder="Username" />
-                  <Icon size="small" align="left">
-                  </Icon>
-                  <Icon size="small" align="right">
-                  </Icon>
-                </Control>
-              </Field>
+              <form onSubmit={handleSubmit(performRegistration)}>
+                <Field>
+                  <Control iconLeft iconRight>
+                    <ControlledInput
+                      control={control}
+                      rules={{
+                        required: {
+                          value: true,
+                          message: 'Username is required'
+                        },
+                        minLength: {
+                          value: 3,
+                          message: 'Username must have at least 3 characters'
+                        },
+                        maxLength: {
+                          value: 20,
+                          message: 'Username must not have more than 20 characters'
+                        }
+                      }}
+                      name="username"
+                      placeholder="Username"
+                      error={errors.username}
+                    />
+                    <Icon size="small" align="left">
+                    </Icon>
+                    <Icon size="small" align="right">
+                    </Icon>
+                  </Control>
+                </Field>
 
-              <Field>
-                <Control iconLeft iconRight>
-                  <Input type="email" placeholder="E-mail" />
-                  <Icon size="small" align="left">
-                  </Icon>
-                  <Icon size="small" align="right">
-                  </Icon>
-                </Control>
-              </Field>
+                <Field>
+                  <Control iconLeft iconRight>
+                    <ControlledInput
+                      control={control}
+                      rules={{
+                        required: {
+                          value: true,
+                          message: 'E-mail address is required'
+                        }
+                      }}
+                      name="email"
+                      type="email"
+                      placeholder="E-mail"
+                      error={errors.email}
+                    />
+                    <Icon size="small" align="left">
+                    </Icon>
+                    <Icon size="small" align="right">
+                    </Icon>
+                  </Control>
+                </Field>
 
-              <Field>
-                <Control iconLeft>
-                  <Input type="password" placeholder="Password"/>
-                  <Icon size="small" align="left">
-                  </Icon>
-                </Control>
-              </Field>
+                <Field>
+                  <Control iconLeft>
+                    <ControlledInput
+                      control={control}
+                      rules={{
+                        required: {
+                          value: true,
+                          message: 'Password is required'
+                        },
+                        pattern: {
+                          value: RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/),
+                          message: 'Password must have at least 1 uppercase character, 1 lowercase character, 1 number and at least 8 characters in total'
+                        }
+                      }}
+                      name="password"
+                      type="password"
+                      placeholder="Password"
+                      error={errors.password}
+                    />
+                    <Icon size="small" align="left">
+                    </Icon>
+                  </Control>
+                </Field>
 
-              <Field>
-                <Control iconLeft>
-                  <Input type="password" placeholder="Repeat password"/>
-                  <Icon size="small" align="left">
-                  </Icon>
-                </Control>
-              </Field>
+                <Field>
+                  <Control iconLeft>
+                    <ControlledInput
+                      control={control}
+                      rules={{
+                        required: {
+                          value: true,
+                          message: 'Password is required'
+                        },
+                        validate: (pw: string) => {
+                          const { password } = getValues();
+                          return password === pw || "Passwords don't match";
+                        }
+                      }}
+                      name="repeatpassword"
+                      type="password"
+                      placeholder="Repeat password"
+                      error={errors.repeatpassword}
+                    />
+                    <Icon size="small" align="left">
+                    </Icon>
+                  </Control>
+                </Field>
 
 
-              <Field>
-                <Control as="div" className="custom-modal-button">
-                  <Button.Group align="right">
-                    <Button color="success">Create account</Button>
-                  </Button.Group>
-                </Control>
-              </Field>
+                <Field as="div" className="custom-modal-bottom">
+                  <Control as="div" className="custom-modal-button">
+                    <Button.Group align="right">
+                      <Button type="submit" color="success">Create account</Button>
+                    </Button.Group>
+                  </Control>
+                </Field>
+              </form>
             </Generic>
           </Generic>
         </Box>

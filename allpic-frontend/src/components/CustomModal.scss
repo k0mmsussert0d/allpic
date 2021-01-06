@@ -1,13 +1,5 @@
 .custom-modal {
 
-  &-close-button {
-    float: right;
-  }
-
-  &-flex {
-    display: flex;
-  }
-
   &-header {
     display: flex;
     align-items: center;
@@ -18,6 +10,20 @@
   &-content {
     max-width: 80%;
     margin: 10px auto; // centers content
+  }
+
+  &-bottom {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &-close-button {
+    float: right;
+  }
+
+  &-error {
+    font-size: 0.6rem;
+    color: red;
   }
 }
 
