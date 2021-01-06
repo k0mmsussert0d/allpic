@@ -1,8 +1,9 @@
 import Axios from "axios";
+import Configuration from "./Configuration";
 
 const axios = Axios.create({
-  baseURL: process.env.API_ADDRESS as string,
-  timeout: parseInt(process.env.API_TIMEOUT ?? '5'),
+  baseURL: Configuration.APIAddress,
+  timeout: Configuration.APITimeout,
 });
 
 export default axios;

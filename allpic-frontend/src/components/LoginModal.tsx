@@ -1,10 +1,34 @@
 import {Box, Button, Control, Field, Generic, Icon, Input, Modal} from "rbx";
-import React from "react";
+import React, {MutableRefObject, useRef, useState} from "react";
 import {UseModalType} from "../hooks/useModal";
 
 import './CustomModal.scss';
+import {APIMethods} from "../services/ApiActions";
 
 const LoginModal = ({modalHook}: LoginModalProps) => {
+
+  const username = useRef(null);
+  const password = useRef(null);
+  const [errorMsg, setErrorMsg] = useState('');
+  const [isAuthing, setIsAuthing] = useState(false);
+
+  const performAuth = async (): Promise<boolean> => {
+
+    setIsAuthing(true);
+
+    let usernameStr = username as unknown as MutableRefObject<string>;
+    let passwordStr = password as unknown as MutableRefObject<string>;
+
+    let res = await APIMethods.authenticate(usernameStr.current.trim(), passwordStr.current.trim());
+
+    setIsAuthing(false);
+
+    if (!res) {
+      setErrorMsg("Invalid username or password.");
+    }
+
+    return res;
+  }
 
   return (
     <Generic as="div">
@@ -23,7 +47,7 @@ const LoginModal = ({modalHook}: LoginModalProps) => {
             <Generic as="div" className="custom-modal-middle">
               <Field>
                 <Control iconLeft iconRight>
-                  <Input type="email" placeholder="Email"/>
+                  <Input type="text" placeholder="Username" ref={username}/>
                   <Icon size="small" align="left">
                   </Icon>
                   <Icon size="small" align="right">
@@ -33,7 +57,7 @@ const LoginModal = ({modalHook}: LoginModalProps) => {
 
               <Field>
                 <Control iconLeft>
-                  <Input type="password" placeholder="Password"/>
+                  <Input type="password" placeholder="Password" ref={password}/>
                   <Icon size="small" align="left">
                   </Icon>
                 </Control>
@@ -41,9 +65,18 @@ const LoginModal = ({modalHook}: LoginModalProps) => {
 
 
               <Field>
-                <Control as="div" className="custom-modal-button">
+                <Control>
+                  <Generic as="div" className="custom-modal-error">
+                    {errorMsg ?
+                      <p>{errorMsg}</p> :
+                      ''
+                    }
+                  </Generic>
                   <Button.Group align="right">
-                    <Button color="success">Log in</Button>
+                    {isAuthing ?
+                      <Button state="loading" color="success">Logging in</Button> :
+                      <Button color="success" onClick={performAuth}>Log in</Button>
+                    }
                   </Button.Group>
                 </Control>
               </Field>

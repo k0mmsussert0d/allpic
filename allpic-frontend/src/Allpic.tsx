@@ -9,7 +9,7 @@ import {APIMethods} from "./services/ApiActions";
 import Upload from "./views/Upload";
 import useModal from "./hooks/useModal";
 import LoginModal from "./components/LoginModal";
-
+import RegisterModal from "./components/RegisterModal";
 
 const Allpic = () => {
 
@@ -22,7 +22,8 @@ const Allpic = () => {
         <Content>
           <MenuBar loginModal={loginModal} registerModal={registerModal}/>
           <Switch>
-            {loginModal.isShowing ? <LoginModal modalHook={loginModal}/> : ''}
+            {loginModal.isShowing ? <LoginModal modalHook={loginModal} /> : ''}
+            {registerModal.isShowing ? <RegisterModal modalHook={registerModal} /> : ''}
             <Route path="/upload">
               <Upload />
             </Route>

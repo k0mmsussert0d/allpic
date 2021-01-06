@@ -10,20 +10,36 @@ const MenuBar = ({ loginModal, registerModal }: MenuBarProps): JSX.Element => {
 
   const auth = useContext(AuthenticationContext).authenticated;
 
+  const toggleLoginModal = (): void => {
+    if (registerModal.isShowing) {
+      registerModal.toggle();
+    }
+
+    loginModal.toggle();
+  };
+
+  const toggleRegisterModal = (): void => {
+    if (loginModal.isShowing) {
+      loginModal.toggle();
+    }
+
+    registerModal.toggle();
+  };
+
   const loginRegisterOptions = () => {
     return (
       <>
         <Navbar.Item>
           <Button.Group>
-            <Button color="primary">
+            <Button color="primary" onClick={toggleRegisterModal}>
               <strong>Sign up</strong>
             </Button>
-            <Button color="light" onClick={() => loginModal.toggle()}>Log in</Button>
+            <Button color="light" onClick={toggleLoginModal}>Log in</Button>
           </Button.Group>
         </Navbar.Item>
       </>
     );
-  }
+  };
 
   const logoutOption = () => {
     return (
@@ -33,7 +49,7 @@ const MenuBar = ({ loginModal, registerModal }: MenuBarProps): JSX.Element => {
         </Link>
       </>
     );
-  }
+  };
 
   return (
     <Navbar>
