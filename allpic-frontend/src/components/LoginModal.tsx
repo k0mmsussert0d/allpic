@@ -1,89 +1,109 @@
-import {Box, Button, Control, Field, Generic, Icon, Input, Modal} from "rbx";
-import React, {MutableRefObject, useRef, useState} from "react";
+import {Box, Button, Control, Field, Generic, Modal} from "rbx";
+import React, {useState} from "react";
 import {UseModalType} from "../hooks/useModal";
-
 import './CustomModal.scss';
+import {useForm} from "react-hook-form";
+import {Message} from "../types/API";
+import ControlledInput from "./ControlledInput";
 import {APIMethods} from "../services/ApiActions";
+
+export interface LoginFormData {
+  username: string,
+  password: string
+}
 
 const LoginModal = ({modalHook}: LoginModalProps) => {
 
-  const username = useRef(null);
-  const password = useRef(null);
-  const [errorMsg, setErrorMsg] = useState('');
-  const [isAuthing, setIsAuthing] = useState(false);
+  const {handleSubmit, control, errors} = useForm<LoginFormData>();
 
-  const performAuth = async (): Promise<boolean> => {
+  const [msg, setMsg] = useState<Message | undefined>(undefined);
+  const [isLoading, setIsLoading] = useState(false);
 
-    setIsAuthing(true);
+  const performAuthentication = async (data: LoginFormData) => {
+    setIsLoading(true);
+    const res = await APIMethods.authenticate(data);
 
-    let usernameStr = username as unknown as MutableRefObject<string>;
-    let passwordStr = password as unknown as MutableRefObject<string>;
-
-    let res = await APIMethods.authenticate(usernameStr.current.trim(), passwordStr.current.trim());
-
-    setIsAuthing(false);
-
-    if (!res) {
-      setErrorMsg("Invalid username or password.");
+    if (res.message?.type === "success") {
+      setTimeout(() => modalHook.toggle(), 2000);
     }
 
-    return res;
+    setIsLoading(false);
+    setMsg(res.message);
   }
 
   return (
     <Generic as="div">
-      <Modal.Background onClick={() => modalHook.toggle()}/>
-      <Modal.Content>
-        <Box as="div" className="custom-modal-window">
-          <Generic as="div" className="custom-modal-close-button">
-            <Button size="small" onClick={() => modalHook.toggle()}>X</Button>
-          </Generic>
-
-          <Generic as="div" className="custom-modal-content">
-            <Generic as="div" className="custom-modal-header">
-              <Generic><h2>Log in:</h2></Generic>
+      <Modal active={true}>
+        <Modal.Background onClick={() => modalHook.toggle()}/>
+        <Modal.Content>
+          <Box as="div" className="custom-modal-window">
+            <Generic as="div" className="custom-modal-close-button">
+              <Button size="small" onClick={() => modalHook.toggle()}>X</Button>
             </Generic>
 
-            <Generic as="div" className="custom-modal-middle">
-              <Field>
-                <Control iconLeft iconRight>
-                  <Input type="text" placeholder="Username" ref={username}/>
-                  <Icon size="small" align="left">
-                  </Icon>
-                  <Icon size="small" align="right">
-                  </Icon>
-                </Control>
-              </Field>
+            <Generic as="div" className="custom-modal-content">
+              <Generic as="div" className="custom-modal-header">
+                <Generic><h2>Log in:</h2></Generic>
+              </Generic>
 
-              <Field>
-                <Control iconLeft>
-                  <Input type="password" placeholder="Password" ref={password}/>
-                  <Icon size="small" align="left">
-                  </Icon>
-                </Control>
-              </Field>
+              <Generic as="div" className="custom-modal-middle">
+                <form onSubmit={handleSubmit(performAuthentication)}>
+                  <Field>
+                    <Control iconLeft iconRight>
+                      <ControlledInput
+                        control={control}
+                        rules={{
+                          required: {
+                            value: true,
+                            message: 'Username is required'
+                          }
+                        }}
+                        name="username"
+                        placeholder="Username"
+                        error={errors.username}
+                      />
+                    </Control>
+                  </Field>
+
+                  <Field>
+                    <Control iconLeft>
+                      <ControlledInput
+                        control={control}
+                        rules={{
+                          required: {
+                            value: true,
+                            message: 'Password is required'
+                          }
+                        }}
+                        name="password"
+                        placeholder="Password"
+                        error={errors.password}
+                      />
+                    </Control>
+                  </Field>
 
 
-              <Field>
-                <Control>
-                  <Generic as="div" className="custom-modal-error">
-                    {errorMsg ?
-                      <p>{errorMsg}</p> :
-                      ''
-                    }
-                  </Generic>
-                  <Button.Group align="right">
-                    {isAuthing ?
-                      <Button state="loading" color="success">Logging in</Button> :
-                      <Button color="success" onClick={performAuth}>Log in</Button>
-                    }
-                  </Button.Group>
-                </Control>
-              </Field>
+                  <Field>
+                    <Control>
+                      <Generic as="div" className="custom-modal-error">
+                        {msg &&
+                        <p style={{color: msg.type === 'success' ? '#23d160' : '#ff3860'}}>{msg.text}</p>
+                        }
+                      </Generic>
+                      <Button.Group align="right">
+                        {isLoading ?
+                          <Button state="loading" color="success">Logging in</Button> :
+                          <Button color="success" type="submit">Log in</Button>
+                        }
+                      </Button.Group>
+                    </Control>
+                  </Field>
+                </form>
+              </Generic>
             </Generic>
-          </Generic>
-        </Box>
-      </Modal.Content>
+          </Box>
+        </Modal.Content>
+      </Modal>
     </Generic>
   );
 }

@@ -3,45 +3,48 @@ import axios from "./axiosConfig";
 import {RegisterFormData} from "../components/RegisterModal";
 import {APIResponse, UserDetails, UserDTO} from "../types/API";
 import {AxiosError, AxiosResponse} from "axios";
+import {LoginFormData} from "../components/LoginModal";
 
 export const APIMethods = {
   getAuth: async (): Promise<APIResponse<AuthenticationContextType>> => {
-    const res = await axios.get<UserDetails>('/auth/');
-    if (res.status === 200) {
-      return {
-        response: {
-          authenticated: true,
-          userDetails: res.data
-        }
-      };
-    }
-
-    return {
-      response: {
-        authenticated: false,
-        userDetails: null
-      }
-    };
+    return axios.get<UserDetails>('/auth/')
+      .then((res: AxiosResponse<UserDetails>): APIResponse<AuthenticationContextType> => {
+        return {
+          response: {
+            authenticated: true,
+            userDetails: res.data
+          }
+        };
+      })
+      .catch((res: AxiosResponse<UserDetails>): APIResponse<AuthenticationContextType> => {
+        return {
+          response: {
+            authenticated: false,
+            userDetails: res.data ?? undefined
+          }
+        };
+      });
   },
 
-  authenticate: async (login: string, password: string): Promise<APIResponse<UserDetails>> => {
-    const res = await axios.get<UserDetails>('/auth/login', {data: {username: login, password: password}})
-    if (res.status === 200) {
-      return {
-        message: {
-          type: 'success',
-          text: 'Successfully logged in!'
-        },
-        response: res.data
-      };
-    }
-
-    return {
-      message: {
-        type: 'failure',
-        text: 'Incorrect username or password'
-      }
-    };
+  authenticate: async (data: LoginFormData): Promise<APIResponse<UserDetails>> => {
+    return axios.post<UserDetails>('/auth/login', data)
+      .then((res: AxiosResponse<UserDetails>): APIResponse<UserDetails> => {
+        return {
+          message: {
+            type: "success",
+            text: "Successfully logged in"
+          },
+          response: res.data
+        };
+      })
+      .catch((reason: AxiosError): APIResponse<UserDetails> => {
+        return {
+          message: {
+            type: 'failure',
+            text: reason.response?.data?.message as string ?? 'Unable to log in'
+          }
+        };
+      });
   },
 
   register: async (data: RegisterFormData): Promise<APIResponse<UserDTO>> => {
