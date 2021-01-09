@@ -1,9 +1,5 @@
 import React from "react";
-
-export interface UserDetails {
-  role: string,
-  username: string,
-}
+import {UserDetails} from "../types/API";
 
 export interface AuthenticationContextType {
   authenticated: boolean,
