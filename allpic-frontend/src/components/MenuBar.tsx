@@ -5,6 +5,7 @@ import {AuthenticationContext} from "../contexts/AuthenticationContext";
 import {UseModalType} from "../hooks/useModal";
 
 import './MenuBar.scss';
+import {APIMethods} from "../services/ApiActions";
 
 const MenuBar = ({ loginModal, registerModal }: MenuBarProps): JSX.Element => {
 
@@ -26,6 +27,11 @@ const MenuBar = ({ loginModal, registerModal }: MenuBarProps): JSX.Element => {
     registerModal.toggle();
   };
 
+  const logout = async () => {
+    await APIMethods.logout();
+    window.location.href = "/";
+  }
+
   const loginRegisterOptions = () => {
     return (
       <>
@@ -45,7 +51,11 @@ const MenuBar = ({ loginModal, registerModal }: MenuBarProps): JSX.Element => {
     return (
       <>
         <Link to="/logout">
-          <Navbar.Item>Sign out</Navbar.Item>
+          <Navbar.Item>
+            <Button.Group>
+              <Button color="light" onClick={logout}>Log out</Button>
+            </Button.Group>
+          </Navbar.Item>
         </Link>
       </>
     );

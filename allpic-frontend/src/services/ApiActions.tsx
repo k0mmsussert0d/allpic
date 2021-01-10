@@ -41,7 +41,7 @@ export const APIMethods = {
         return {
           message: {
             type: 'failure',
-            text: reason.response?.data?.message as string ?? 'Unable to log in'
+            text: reason.response?.status === 401 ? 'Incorrect username or password' : (reason.response?.data?.message as string ?? 'Unable to log in')
           }
         };
       });
@@ -66,5 +66,9 @@ export const APIMethods = {
           }
         };
       })
+  },
+
+  logout: async (): Promise<void> => {
+    return axios.get('/auth/logout');
   }
 }

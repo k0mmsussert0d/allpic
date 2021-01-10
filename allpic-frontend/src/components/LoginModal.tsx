@@ -23,12 +23,13 @@ const LoginModal = ({modalHook}: LoginModalProps) => {
     setIsLoading(true);
     const res = await APIMethods.authenticate(data);
 
+    setMsg(res.message);
+
     if (res.message?.type === "success") {
-      setTimeout(() => modalHook.toggle(), 2000);
+      setTimeout(() => window.location.reload(), 2000);
     }
 
     setIsLoading(false);
-    setMsg(res.message);
   }
 
   return (
@@ -78,6 +79,7 @@ const LoginModal = ({modalHook}: LoginModalProps) => {
                         name="password"
                         placeholder="Password"
                         error={errors.password}
+                        type="password"
                       />
                     </Control>
                   </Field>
