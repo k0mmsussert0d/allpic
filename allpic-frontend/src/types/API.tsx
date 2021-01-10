@@ -24,3 +24,13 @@ export interface UserDTO {
   },
   username: string
 }
+
+export interface ImageDTO {
+  id: number,
+  isActive: boolean,
+  isPublic: boolean,
+  title: string,
+  token: string,
+  uploadTime: string,
+  uploader: UserDTO
+}

@@ -1,7 +1,7 @@
 import {AuthenticationContextType} from "../contexts/AuthenticationContext";
 import axios from "./axiosConfig";
 import {RegisterFormData} from "../components/RegisterModal";
-import {APIResponse, UserDetails, UserDTO} from "../types/API";
+import {APIResponse, ImageDTO, UserDetails, UserDTO} from "../types/API";
 import {AxiosError, AxiosResponse} from "axios";
 import {LoginFormData} from "../components/LoginModal";
 
@@ -70,5 +70,26 @@ export const APIMethods = {
 
   logout: async (): Promise<void> => {
     return axios.get('/auth/logout');
+  },
+
+  uploadFile: async(data: FormData): Promise<APIResponse<ImageDTO>> => {
+    return axios.post<ImageDTO>('/img/upload', data)
+      .then((res: AxiosResponse<ImageDTO>): APIResponse<ImageDTO> => {
+        return {
+          message: {
+            type: 'success',
+            text: 'File uploaded!'
+          },
+          response: res.data
+        };
+      })
+      .catch((reason: AxiosError): APIResponse<ImageDTO> => {
+        return {
+          message: {
+            type: 'failure',
+            text: reason.response?.data?.message as string ?? 'Unable to upload a file'
+          }
+        };
+      })
   }
 }
