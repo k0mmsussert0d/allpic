@@ -28,10 +28,11 @@ const Upload = () => {
 
   const fileSelectedCbk = (e: Event) => {
     const target = e.target as HTMLInputElement;
-    if (!target.files) {
-      return;
+    if (!target.files || !target.files[0].name) {
+      setFilename('');
+    } else {
+      setFilename(target.files[0].name);
     }
-    setFilename(target.files[0].name);
   }
 
   const uploadFile = async (e: FileUploadDetails) => {
