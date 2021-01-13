@@ -4,6 +4,8 @@ import './Upload.scss';
 import {useForm} from "react-hook-form";
 import ControlledInput from "../components/ControlledInput";
 import {APIMethods} from "../services/ApiActions";
+import Configuration from "../services/Configuration";
+import { Message } from "../types/API";
 
 export interface FileUploadDetails {
   image: FileList,
@@ -22,6 +24,7 @@ const Upload = () => {
   });
   const [filename, setFilename] = useState('');
   const [isUploading, setIsUploading] = useState(false);
+  const [msg, setMsg] = useState<Message | undefined>(undefined);
 
   const fileSelectedCbk = (e: Event) => {
     const target = e.target as HTMLInputElement;
@@ -45,19 +48,27 @@ const Upload = () => {
     const res = await APIMethods.uploadFile(formData);
 
     setIsUploading(false);
-    console.log(res);
+
+    if (res.message?.type === "success") {
+      window.location.href = `${Configuration.FrontURL}/${res.response?.token}`;
+    } else {
+      setMsg(res.message);
+    }
   }
 
   return (
-    <Generic as="div" className="upload_wrapper">
+    <Generic as="div" className="main-wrapper">
       <form onSubmit={handleSubmit(uploadFile)}>
         <Field>
           <File align="centered" fullwidth hasName boxed>
             <File.Label>
-              <File.Input name="image" ref={register} onChange={fileSelectedCbk}/>
+              <File.Input
+                name="image"
+                ref={register}
+                onChange={fileSelectedCbk}
+              />
               <File.CTA>
-                <File.Icon>
-                </File.Icon>
+                <File.Icon></File.Icon>
                 <File.Label as="span">Choose an Image</File.Label>
               </File.CTA>
               <File.Name>{filename}</File.Name>
@@ -77,21 +88,30 @@ const Upload = () => {
         </Field>
         <Field>
           <Label>
-            <Checkbox name="private" ref={register}/> Private upload
+            <Checkbox name="private" ref={register} /> Private upload
           </Label>
         </Field>
         <Field>
           <Button.Group align="right">
-            {isUploading ?
-              <Button state="loading" color="success">Uploading</Button> :
-              <Button color="success" type="submit">Upload</Button>
-            }
+            {isUploading ? (
+              <Button state="loading" color="success">
+                Uploading
+              </Button>
+            ) : (
+              <Button color="success" type="submit">
+                Upload
+              </Button>
+            )}
           </Button.Group>
         </Field>
-
+        {msg && (
+          <p style={{ color: msg.type === "success" ? "#23d160" : "#ff3860" }}>
+            {msg.text}
+          </p>
+        )}
       </form>
     </Generic>
-  )
+  );
 };
 
 export default Upload;

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-
 import 'rbx/index.css';
+import './Allpic.scss';
 import {Content} from "rbx";
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import MenuBar from "./components/MenuBar";
@@ -10,6 +10,7 @@ import Upload from "./views/Upload";
 import useModal from "./hooks/useModal";
 import LoginModal from "./components/LoginModal";
 import RegisterModal from "./components/RegisterModal";
+import ImageView from "./views/ImageView";
 
 const unauthorizedContextValue: AuthenticationContextType = {
   authenticated: false,
@@ -45,6 +46,7 @@ const Allpic = () => {
             <Route path="/upload">
               <Upload />
             </Route>
+            <Route path="/:id" component={ImageView}/>
             <Route path="/">
               <h1>hello world</h1>
             </Route>

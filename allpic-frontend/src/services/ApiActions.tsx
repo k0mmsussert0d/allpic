@@ -73,7 +73,7 @@ export const APIMethods = {
   },
 
   uploadFile: async(data: FormData): Promise<APIResponse<ImageDTO>> => {
-    return axios.post<ImageDTO>('/img/upload', data)
+    return axios.post<ImageDTO>('/img/', data)
       .then((res: AxiosResponse<ImageDTO>): APIResponse<ImageDTO> => {
         return {
           message: {
@@ -91,5 +91,29 @@ export const APIMethods = {
           }
         };
       })
+  },
+
+  getFileDetails: async (token: string): Promise<APIResponse<ImageDTO>> => {
+    return axios.get<ImageDTO>(`/img/${token}`)
+      .then((res: AxiosResponse<ImageDTO>): APIResponse<ImageDTO> => {
+        return {
+          message: {
+            type: 'success',
+          },
+          response: res.data
+        };
+      })
+      .catch((reason: AxiosError) : APIResponse<ImageDTO> => {
+        return {
+          message: {
+            type: 'failure',
+            text: 'Cannot find image'
+          }
+        };
+      });
+  },
+
+  getImageLink: (token: string): string => {
+    return `${axios.defaults.baseURL}/img/i/${token}`;
   }
 }
