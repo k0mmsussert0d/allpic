@@ -1,8 +1,9 @@
 import {RouteComponentProps} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {Generic, Image} from "rbx";
+import {Generic, Image, Title} from "rbx";
 import {APIMethods} from "../services/ApiActions";
 import {APIResponse, ImageDTO, Message} from "../types/API";
+import './ImageView.scss';
 
 const ImageView = ({match}: RouteComponentProps<ImageViewParams>) => {
 
@@ -35,9 +36,51 @@ const ImageView = ({match}: RouteComponentProps<ImageViewParams>) => {
     );
   }
 
+  const renderTitle = () => {
+    return (
+      <Title size={2}>{imageDetails!.title}</Title>
+    );
+  }
+
+  const renderDetails = () => {
+
+    const parseDate = (date: string): string => {
+      return new Date(date).toLocaleDateString(
+        'en-gb',
+        {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        }  
+      );
+    }
+
+    const parseExactDate = (date: string): string => {
+      return new Date(date).toLocaleTimeString(
+        'en-gb',
+        {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: 'numeric',
+          minute: 'numeric',
+          second: 'numeric'
+        }
+      );
+    }
+
+    return (
+      <Generic as="div" className="image-details" tooltip={imageDetails!.uploadTime && parseExactDate(imageDetails!.uploadTime)}>
+        {`Uploaded by ${imageDetails!.uploader ? imageDetails!.uploader : 'Anonymous'} on ${imageDetails!.uploadTime ? parseDate(imageDetails!.uploadTime) : 'unknown date'}`}
+      </Generic>
+    );
+  }
+
   return (
     <Generic as="div" className="main-wrapper">
       {imageDetails ? renderImage() : renderNotFound()}
+      {imageDetails?.title && renderTitle()}
+      {imageDetails && renderDetails()}
     </Generic>
   )
 }
