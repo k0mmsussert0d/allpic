@@ -21,6 +21,10 @@ import java.util.List;
 @RequestMapping("/img")
 public interface ImageController {
 
+    @ApiOperation(value = "Gets image details")
+    @GetMapping("/{token}")
+    ResponseEntity<ImageDTO> getImageDetails(@PathVariable String token);
+
     @ApiOperation(value = "Gets a full image")
     @GetMapping("/i/{token}")
     ResponseEntity<Resource> getImage(@PathVariable String token);
@@ -30,7 +34,7 @@ public interface ImageController {
     ResponseEntity<Resource> getImageThumbnail(@PathVariable String token);
 
     @ApiOperation(value = "Uploads an image")
-    @PostMapping("/upload")
+    @PostMapping("/")
     ResponseEntity<ImageDTO> uploadImage(
             @RequestPart("file") MultipartFile image,
             @RequestPart("metadata") UploadImageDetails imageDetails,

@@ -37,10 +37,15 @@ public class SaveImageServiceImpl implements SaveImageService {
         String token = getUniqueImageToken();
         String mimeType = getFileMimeType(imageFilename);
 
-        ImageDTO savedImageDTO = getPersistedImageDto(title, isPublic, uploader, token);
-        File thumbnailImage = imageThumbnailService.generateThumbnail(imageFileInputStream, token, getFileExtension(imageFilename));
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        imageFileInputStream.transferTo(baos);
+        InputStream inputStream1 = new ByteArrayInputStream(baos.toByteArray());
+        InputStream inputStream2 = new ByteArrayInputStream(baos.toByteArray());
 
-        uploadImageToS3(imageFileInputStream, token, mimeType);
+        ImageDTO savedImageDTO = getPersistedImageDto(title, isPublic, uploader, token);
+        File thumbnailImage = imageThumbnailService.generateThumbnail(inputStream1, token, getFileExtension(imageFilename));
+
+        uploadImageToS3(inputStream2, token, mimeType);
         uploadImageToS3(new FileInputStream(thumbnailImage), token + "_thumb", mimeType);
         thumbnailImage.deleteOnExit();
 

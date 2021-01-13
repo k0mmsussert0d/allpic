@@ -39,6 +39,17 @@ public class ImageControllerImpl implements ImageController {
     private final ModelMapper modelMapper;
 
     @Override
+    public ResponseEntity<ImageDTO> getImageDetails(String token) {
+        try {
+            return ResponseEntity.ok(imageDTOService.findByToken(token));
+        } catch (NullPointerException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (SdkClientException e) {
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+        }
+    }
+
+    @Override
     public ResponseEntity<Resource> getImage(String token) {
         ImageDTOWithContent requestedImage;
 
