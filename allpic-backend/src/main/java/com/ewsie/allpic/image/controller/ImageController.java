@@ -43,7 +43,7 @@ public interface ImageController {
 
     @ApiOperation(value = "Gets the list of most recently uploaded public images")
     @GetMapping("/recent")
-    ResponseEntity<List<ImagePreviewDetails>> getMostRecentImages();
+    ResponseEntity<List<ImagePreviewDetails>> getMostRecentImages(@RequestParam(name = "page", defaultValue = "1") int page, @RequestParam(name = "per_page", defaultValue = "10") int perPage);
 
     @ApiOperation(value = "Deletes the image")
     @DeleteMapping("/{token}")

@@ -109,8 +109,12 @@ public class ImageControllerImpl implements ImageController {
     }
 
     @Override
-    public ResponseEntity<List<ImagePreviewDetails>> getMostRecentImages() {
-        List<ImageDTO> recentImages = imageDTOService.findAllOrderByUploadedTimeDesc();
+    public ResponseEntity<List<ImagePreviewDetails>> getMostRecentImages(int page, int perPage) {
+        if (page <= 0 || perPage <= 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        List<ImageDTO> recentImages = imageDTOService.findAllOrderByUploadedTimeDesc(page, perPage);
 
         List<ImagePreviewDetails> res = recentImages.stream()
                 .map(i -> modelMapper.map(i, ImagePreviewDetails.class))
