@@ -1,9 +1,10 @@
 import {AuthenticationContextType} from "../contexts/AuthenticationContext";
 import axios from "./axiosConfig";
 import {RegisterFormData} from "../components/RegisterModal";
-import {APIResponse, ImageDTO, UserDetails, UserDTO} from "../types/API";
+import {APIResponse, ImageDTO, ImagePreviewDetails, UserDetails, UserDTO} from "../types/API";
 import {AxiosError, AxiosResponse} from "axios";
 import {LoginFormData} from "../components/LoginModal";
+import Configuration from "./Configuration";
 
 export const APIMethods = {
   getAuth: async (): Promise<APIResponse<AuthenticationContextType>> => {
@@ -115,5 +116,33 @@ export const APIMethods = {
 
   getImageLink: (token: string): string => {
     return `${axios.defaults.baseURL}/img/i/${token}`;
+  },
+
+  getImageThumbLink: (token: string): string => {
+    return `${axios.defaults.baseURL}/img/i/thumb/${token}`;
+  },
+
+  getImageViewPageLink: (token: string): string => {
+    return `${Configuration.FrontURL}/${token}`;
+  },
+
+  getLatestImagesPreviews: (page: number, perPage: number): Promise<APIResponse<Array<ImagePreviewDetails>>> => {
+    return axios.get<Array<ImagePreviewDetails>>(`/img/recent`, { params: { page: page ?? 1, per_page: perPage ?? 10 }})
+      .then((res: AxiosResponse<Array<ImagePreviewDetails>>): APIResponse<Array<ImagePreviewDetails>> => {
+        return {
+          message: {
+            type: 'success'
+          },
+          response: res.data
+        };
+      })
+      .catch((reason: AxiosError): APIResponse<Array<ImagePreviewDetails>> => {
+        return {
+          message: {
+            type: 'failure',
+            text: 'Cannot fetch latest images'
+          }
+        };
+      });
   }
 }

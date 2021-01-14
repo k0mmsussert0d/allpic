@@ -34,3 +34,8 @@ export interface ImageDTO {
   uploadTime: string,
   uploader: UserDTO
 }
+
+export interface ImagePreviewDetails {
+  token: string,
+  title: string
+}

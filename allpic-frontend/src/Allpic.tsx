@@ -11,6 +11,7 @@ import useModal from "./hooks/useModal";
 import LoginModal from "./components/LoginModal";
 import RegisterModal from "./components/RegisterModal";
 import ImageView from "./views/ImageView";
+import Home from './views/Home';
 
 const unauthorizedContextValue: AuthenticationContextType = {
   authenticated: false,
@@ -48,7 +49,7 @@ const Allpic = () => {
             </Route>
             <Route path="/:id" component={ImageView}/>
             <Route path="/">
-              <h1>hello world</h1>
+              <Home />
             </Route>
           </Switch>
         </Content>
