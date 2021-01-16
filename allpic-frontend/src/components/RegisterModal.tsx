@@ -5,6 +5,8 @@ import {useForm} from "react-hook-form";
 import ControlledInput from "./ControlledInput";
 import {APIMethods} from "../services/ApiActions";
 import {Message} from "../types/API";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEnvelope, faLock, faUser } from "@fortawesome/free-solid-svg-icons";
 
 export interface RegisterFormData {
   username: string,
@@ -58,7 +60,7 @@ const RegisterModal = ({modalHook}: RegisterModalProps) => {
               <Generic as="div" className="custom-modal-middle">
                 <form onSubmit={handleSubmit(performRegistration)}>
                   <Field>
-                    <Control iconLeft iconRight>
+                    <Control iconLeft>
                       <ControlledInput
                         control={control}
                         rules={{
@@ -80,14 +82,13 @@ const RegisterModal = ({modalHook}: RegisterModalProps) => {
                         error={errors.username}
                       />
                       <Icon size="small" align="left">
-                      </Icon>
-                      <Icon size="small" align="right">
+                        <FontAwesomeIcon icon={faUser} />
                       </Icon>
                     </Control>
                   </Field>
 
                   <Field>
-                    <Control iconLeft iconRight>
+                    <Control iconLeft>
                       <ControlledInput
                         control={control}
                         rules={{
@@ -102,8 +103,7 @@ const RegisterModal = ({modalHook}: RegisterModalProps) => {
                         error={errors.email}
                       />
                       <Icon size="small" align="left">
-                      </Icon>
-                      <Icon size="small" align="right">
+                        <FontAwesomeIcon icon={faEnvelope} />
                       </Icon>
                     </Control>
                   </Field>
@@ -128,6 +128,7 @@ const RegisterModal = ({modalHook}: RegisterModalProps) => {
                         error={errors.password}
                       />
                       <Icon size="small" align="left">
+                        <FontAwesomeIcon icon={faLock} />
                       </Icon>
                     </Control>
                   </Field>
@@ -152,6 +153,7 @@ const RegisterModal = ({modalHook}: RegisterModalProps) => {
                         error={errors.repeatpassword}
                       />
                       <Icon size="small" align="left">
+                        <FontAwesomeIcon icon={faLock} />
                       </Icon>
                     </Control>
                   </Field>

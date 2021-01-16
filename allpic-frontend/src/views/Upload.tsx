@@ -1,11 +1,13 @@
 import React, {useState} from "react";
-import {Generic, File, Field, Control, Checkbox, Label, Button} from "rbx";
+import {Generic, File, Field, Control, Checkbox, Label, Button, Icon} from "rbx";
 import './Upload.scss';
 import {useForm} from "react-hook-form";
 import ControlledInput from "../components/ControlledInput";
 import {APIMethods} from "../services/ApiActions";
 import Configuration from "../services/Configuration";
 import { Message } from "../types/API";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFileAlt, faUpload } from "@fortawesome/free-solid-svg-icons";
 
 export interface FileUploadDetails {
   image: FileList,
@@ -69,7 +71,9 @@ const Upload = () => {
                 onChange={fileSelectedCbk}
               />
               <File.CTA>
-                <File.Icon></File.Icon>
+                <File.Icon>
+                  <FontAwesomeIcon icon={faUpload} />
+                </File.Icon>
                 <File.Label as="span">Choose an Image</File.Label>
               </File.CTA>
               <File.Name>{filename}</File.Name>
@@ -85,6 +89,9 @@ const Upload = () => {
               error={errors.title}
               type="text"
             />
+            <Icon align="left">
+              <FontAwesomeIcon icon={faFileAlt} />
+            </Icon>
           </Control>
         </Field>
         <Field>

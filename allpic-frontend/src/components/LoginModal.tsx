@@ -1,4 +1,4 @@
-import {Box, Button, Control, Field, Generic, Modal} from "rbx";
+import {Box, Button, Control, Field, Generic, Icon, Modal} from "rbx";
 import React, {useState} from "react";
 import {UseModalType} from "../hooks/useModal";
 import './CustomModal.scss';
@@ -6,6 +6,8 @@ import {useForm} from "react-hook-form";
 import {Message} from "../types/API";
 import ControlledInput from "./ControlledInput";
 import {APIMethods} from "../services/ApiActions";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
 
 export interface LoginFormData {
   username: string,
@@ -14,7 +16,12 @@ export interface LoginFormData {
 
 const LoginModal = ({modalHook}: LoginModalProps) => {
 
-  const {handleSubmit, control, errors} = useForm<LoginFormData>();
+  const {handleSubmit, control, errors} = useForm<LoginFormData>({
+    defaultValues: {
+      username: '',
+      password: ''
+    }
+  });
 
   const [msg, setMsg] = useState<Message | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);
@@ -50,7 +57,7 @@ const LoginModal = ({modalHook}: LoginModalProps) => {
               <Generic as="div" className="custom-modal-middle">
                 <form onSubmit={handleSubmit(performAuthentication)}>
                   <Field>
-                    <Control iconLeft iconRight>
+                    <Control iconLeft>
                       <ControlledInput
                         control={control}
                         rules={{
@@ -63,6 +70,9 @@ const LoginModal = ({modalHook}: LoginModalProps) => {
                         placeholder="Username"
                         error={errors.username}
                       />
+                      <Icon align="left">
+                        <FontAwesomeIcon icon={faEnvelope} />
+                      </Icon>
                     </Control>
                   </Field>
 
@@ -81,6 +91,9 @@ const LoginModal = ({modalHook}: LoginModalProps) => {
                         error={errors.password}
                         type="password"
                       />
+                      <Icon align="left">
+                        <FontAwesomeIcon icon={faLock} />
+                      </Icon>
                     </Control>
                   </Field>
 

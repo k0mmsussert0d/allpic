@@ -50,13 +50,11 @@ const MenuBar = ({ loginModal, registerModal }: MenuBarProps): JSX.Element => {
   const logoutOption = () => {
     return (
       <>
-        <Link to="/logout">
           <Navbar.Item>
             <Button.Group>
               <Button color="light" onClick={logout}>Log out</Button>
             </Button.Group>
           </Navbar.Item>
-        </Link>
       </>
     );
   };
@@ -65,10 +63,10 @@ const MenuBar = ({ loginModal, registerModal }: MenuBarProps): JSX.Element => {
     <Navbar>
       <Navbar.Brand>
         <Link to="/">
-          <Navbar.Item>Home</Navbar.Item>
+          <Navbar.Link arrowless>Home</Navbar.Link>
         </Link>
         <Link to="/upload">
-          <Navbar.Item>Upload</Navbar.Item>
+          <Navbar.Link arrowless>Upload</Navbar.Link>
         </Link>
         <Navbar.Burger />
       </Navbar.Brand>
