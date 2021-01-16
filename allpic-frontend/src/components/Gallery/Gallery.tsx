@@ -50,12 +50,12 @@ const Gallery = () => {
 
   return (
       <Column.Group multiline gapless>
-          {images?.map((group: Array<ImagePreviewDetails>) => {
+          {images?.map((group: Array<ImagePreviewDetails>, i: number) => {
               return ( 
-                <Column size={1}>
-                    {group.map((img: ImagePreviewDetails) => {
+                <Column size={1} key={i}>
+                    {group.map((img: ImagePreviewDetails, j: number) => {
                         return (
-                            <a href={APIMethods.getImageViewPageLink(img.token)}>
+                            <a href={APIMethods.getImageViewPageLink(img.token)} key={i*100 + j}>
                                 <Generic as="div" className="image-preview">
                                     <Image src={APIMethods.getImageThumbLink(img.token)} />
                                 </Generic>
