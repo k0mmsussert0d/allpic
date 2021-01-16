@@ -1,0 +1,14 @@
+@import '../../styles/variables.scss';
+
+.sharing-dropdown {
+  min-width: 30rem;
+}
+
+.sharing-options {
+
+    .sharing-option {
+      &-link-body {
+        flex-grow: 1;
+      }
+    }
+}

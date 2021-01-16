@@ -5,6 +5,7 @@ import {APIMethods} from "../services/ApiActions";
 import {APIResponse, ImageDTO, Message} from "../types/API";
 import './ImageView.scss';
 import Comments from "../components/Comments/Comments";
+import SharingOptions from "../components/SharingOptions/SharingOptions";
 
 const ImageView = ({match}: RouteComponentProps<ImageViewParams>) => {
 
@@ -37,12 +38,6 @@ const ImageView = ({match}: RouteComponentProps<ImageViewParams>) => {
     );
   }
 
-  const renderTitle = () => {
-    return (
-      <Title size={2}>{imageDetails!.title}</Title>
-    );
-  }
-
   const renderDetails = () => {
 
     const parseDate = (date: string): string => {
@@ -71,16 +66,25 @@ const ImageView = ({match}: RouteComponentProps<ImageViewParams>) => {
     }
 
     return (
-      <Generic as="div" className="image-details" tooltip={imageDetails!.uploadTime && parseExactDate(imageDetails!.uploadTime)}>
-        {`Uploaded by ${imageDetails!.uploader ? imageDetails!.uploader : 'Anonymous'} on ${imageDetails!.uploadTime ? parseDate(imageDetails!.uploadTime) : 'unknown date'}`}
-      </Generic>
+      <>
+        <Generic as="div" className="image-details">
+          <Generic as="div" className="image-details-title">
+          <Title size={2}>{imageDetails!.title}</Title>
+          </Generic>
+          <Generic as="div" className="image-details-date" tooltip={imageDetails!.uploadTime && parseExactDate(imageDetails!.uploadTime)}>
+            {`Uploaded by ${imageDetails!.uploader ? imageDetails!.uploader : 'Anonymous'} on ${imageDetails!.uploadTime ? parseDate(imageDetails!.uploadTime) : 'unknown date'}`}
+          </Generic>
+        </Generic>
+        <Generic as="div" className="image-share">
+          <SharingOptions token={imageDetails!.token} />
+        </Generic>
+      </>
     );
   }
 
   return (
     <Generic as="div" className="main-wrapper">
       {imageDetails ? renderImage() : renderNotFound()}
-      {imageDetails?.title && renderTitle()}
       {imageDetails && renderDetails()}
       {imageDetails && <Comments id={imageDetails.token} />}
     </Generic>

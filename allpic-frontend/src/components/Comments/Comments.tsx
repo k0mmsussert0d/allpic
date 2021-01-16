@@ -1,4 +1,4 @@
-import { Media, Image, Content, Level, Icon } from "rbx";
+import { Media, Image, Content } from "rbx";
 import { useEffect, useState } from "react";
 import { APIMethods } from "../../services/ApiActions";
 import { CommentDTO } from "../../types/API";
