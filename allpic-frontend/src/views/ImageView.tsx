@@ -4,6 +4,7 @@ import {Generic, Image, Title} from "rbx";
 import {APIMethods} from "../services/ApiActions";
 import {APIResponse, ImageDTO, Message} from "../types/API";
 import './ImageView.scss';
+import Comments from "../components/Comments/Comments";
 
 const ImageView = ({match}: RouteComponentProps<ImageViewParams>) => {
 
@@ -81,6 +82,7 @@ const ImageView = ({match}: RouteComponentProps<ImageViewParams>) => {
       {imageDetails ? renderImage() : renderNotFound()}
       {imageDetails?.title && renderTitle()}
       {imageDetails && renderDetails()}
+      {imageDetails && <Comments id={imageDetails.token} />}
     </Generic>
   )
 }

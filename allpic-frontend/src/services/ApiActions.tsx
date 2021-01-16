@@ -1,7 +1,7 @@
 import {AuthenticationContextType} from "../contexts/AuthenticationContext";
 import axios from "./axiosConfig";
 import {RegisterFormData} from "../components/RegisterModal";
-import {APIResponse, ImageDTO, ImagePreviewDetails, UserDetails, UserDTO} from "../types/API";
+import {APIResponse, CommentDTO, ImageDTO, ImagePreviewDetails, UserDetails, UserDTO} from "../types/API";
 import {AxiosError, AxiosResponse} from "axios";
 import {LoginFormData} from "../components/LoginModal";
 import Configuration from "./Configuration";
@@ -144,5 +144,25 @@ export const APIMethods = {
           }
         };
       });
+  },
+
+  getComments: async (token: string): Promise<APIResponse<Array<CommentDTO>>> => {
+    return axios.get<Array<CommentDTO>>(`/comment/${token}`)
+      .then((res: AxiosResponse<Array<CommentDTO>>): APIResponse<Array<CommentDTO>> => {
+        return {
+          message: {
+            type: 'success'
+          },
+          response: res.data
+        };
+      })
+      .catch((reason: AxiosError): APIResponse<Array<CommentDTO>> => {
+        return {
+          message: {
+            type: 'failure',
+            text: 'Cannot fetch comments'
+          }
+        };
+      })
   }
 }

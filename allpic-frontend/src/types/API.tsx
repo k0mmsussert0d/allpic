@@ -39,3 +39,11 @@ export interface ImagePreviewDetails {
   token: string,
   title: string
 }
+
+export interface CommentDTO {
+  author: string,
+  id: number,
+  isPublic: boolean,
+  message: string,
+  timeAdded: string
+}
