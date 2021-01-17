@@ -164,5 +164,30 @@ export const APIMethods = {
           }
         };
       })
+  },
+
+  postComment: async (token: string, content: string): Promise<APIResponse<CommentDTO>> => {
+    return axios.post<CommentDTO>(`/comment/${token}`, content, {
+      headers: {
+        'Content-Type': 'text/plain'
+      }
+    })
+      .then((res: AxiosResponse<CommentDTO>): APIResponse<CommentDTO> => {
+        return {
+          message: {
+            type: 'success',
+            text: 'Comment added'
+          },
+          response: res.data
+        };
+      })
+      .catch((reason: AxiosError): APIResponse<CommentDTO> => {
+        return {
+          message: {
+            type: 'failure',
+            text: 'Failed to add comment'
+          }
+        };
+      });
   }
 }

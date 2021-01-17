@@ -1,22 +1,7 @@
-import { Media, Image, Content } from "rbx";
-import { useEffect, useState } from "react";
-import { APIMethods } from "../../services/ApiActions";
+import { Generic, Media, Image, Content } from "rbx";
 import { CommentDTO } from "../../types/API";
 
-const Comments = ({ id }: CommentsProps) => {
-  const [comments, setComments] = useState<Array<CommentDTO>>([]);
-
-  useEffect(() => {
-    const fetchComments = async () => {
-      const res = await APIMethods.getComments(id);
-
-      if (res.message?.type === "success" && res.response) {
-        setComments(res.response);
-      }
-    };
-
-    fetchComments();
-  }, [id]);
+const Comments = ({ list }: CommentsProps) => {
 
   const parseExactDate = (date: string): string => {
     return new Date(date).toLocaleTimeString(
@@ -33,8 +18,8 @@ const Comments = ({ id }: CommentsProps) => {
   }
 
   return (
-    <>
-      {comments.map((comment: CommentDTO) => {
+    <Generic as="section" className="comments">
+      {list.map((comment: CommentDTO) => {
         return (
           <Media key={comment.id}>
             <Media.Item as="figure" align="left">
@@ -58,12 +43,12 @@ const Comments = ({ id }: CommentsProps) => {
           </Media>
         );
       })}
-    </>
+    </Generic>
   );
 };
 
 export interface CommentsProps {
-  id: string;
+  list: Array<CommentDTO>
 }
 
 export default Comments;

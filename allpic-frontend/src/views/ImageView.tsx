@@ -1,16 +1,20 @@
 import {RouteComponentProps} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {Generic, Image, Title} from "rbx";
 import {APIMethods} from "../services/ApiActions";
-import {APIResponse, ImageDTO, Message} from "../types/API";
+import {APIResponse, CommentDTO, ImageDTO, Message} from "../types/API";
 import './ImageView.scss';
 import Comments from "../components/Comments/Comments";
 import SharingOptions from "../components/SharingOptions/SharingOptions";
+import { AuthenticationContext } from "../contexts/AuthenticationContext";
+import AddComment from "../components/Comments/AddComment/AddComment";
 
 const ImageView = ({match}: RouteComponentProps<ImageViewParams>) => {
 
   const [message, setMessage] = useState<Message | undefined>(undefined);
   const [imageDetails, setImageDetails] = useState<ImageDTO | undefined>(undefined);
+  const [comments, setComments] = useState<Array<CommentDTO>>([]);
+  const auth = useContext(AuthenticationContext);
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -23,6 +27,20 @@ const ImageView = ({match}: RouteComponentProps<ImageViewParams>) => {
         setImageDetails(details?.response);
       })
   }, [match.params.id]);
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      const res = await APIMethods.getComments(imageDetails!.token);
+
+      if (res.message?.type === "success" && res.response) {
+        setComments(res.response);
+      }
+    };
+
+    if (imageDetails) {
+      fetchComments();
+    }
+  }, [imageDetails]);
 
   const renderImage = () => {
     return (
@@ -82,11 +100,25 @@ const ImageView = ({match}: RouteComponentProps<ImageViewParams>) => {
     );
   }
 
+  const handleCommentAdd = (res: APIResponse<CommentDTO>): void => {
+    if (res.message?.type !== 'success' || !(res.response)) {
+      return;
+    }
+
+    setComments([...comments, res.response]);
+  }
+
   return (
     <Generic as="div" className="main-wrapper">
       {imageDetails ? renderImage() : renderNotFound()}
       {imageDetails && renderDetails()}
-      {imageDetails && <Comments id={imageDetails.token} />}
+      {imageDetails && <Comments list={comments} />}
+      {imageDetails && auth && 
+        <AddComment
+          imageToken={imageDetails.token}
+          callback={handleCommentAdd}
+        />
+      }
     </Generic>
   )
 }
