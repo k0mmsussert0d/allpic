@@ -113,7 +113,7 @@ const ImageView = ({match}: RouteComponentProps<ImageViewParams>) => {
       {imageDetails ? renderImage() : renderNotFound()}
       {imageDetails && renderDetails()}
       {imageDetails && <Comments list={comments} />}
-      {imageDetails && auth && 
+      {imageDetails && auth.authenticated && 
         <AddComment
           imageToken={imageDetails.token}
           callback={handleCommentAdd}
