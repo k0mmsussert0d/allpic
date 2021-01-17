@@ -6,6 +6,7 @@ import com.ewsie.allpic.user.model.UserDTO;
 import com.ewsie.allpic.user.model.request.ResetPasswordRequestBody;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,6 +26,10 @@ public interface UserController {
     @ApiOperation(value = "Returns single user")
     @GetMapping("/{username}")
     ResponseEntity<UserDTO> userInfo(@PathVariable String username);
+
+    @ApiOperation(value = "Gets user avatar")
+    @GetMapping("/{username}/avatar")
+    ResponseEntity<Resource> userAvatar(@PathVariable String username);
 
     @ApiOperation(value = "Returns list of images uploaded by user authenticated with session cookie")
     @GetMapping("/images")
