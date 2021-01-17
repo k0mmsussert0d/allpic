@@ -39,6 +39,17 @@ public class ImageControllerImpl implements ImageController {
     private final ModelMapper modelMapper;
 
     @Override
+    public ResponseEntity<ImageDTO> getImageDetails(String token) {
+        try {
+            return ResponseEntity.ok(imageDTOService.findByToken(token));
+        } catch (NullPointerException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (SdkClientException e) {
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+        }
+    }
+
+    @Override
     public ResponseEntity<Resource> getImage(String token) {
         ImageDTOWithContent requestedImage;
 
@@ -98,8 +109,12 @@ public class ImageControllerImpl implements ImageController {
     }
 
     @Override
-    public ResponseEntity<List<ImagePreviewDetails>> getMostRecentImages() {
-        List<ImageDTO> recentImages = imageDTOService.findAllOrderByUploadedTimeDesc();
+    public ResponseEntity<List<ImagePreviewDetails>> getMostRecentImages(int page, int perPage) {
+        if (page <= 0 || perPage <= 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        List<ImageDTO> recentImages = imageDTOService.findAllOrderByUploadedTimeDesc(page, perPage);
 
         List<ImagePreviewDetails> res = recentImages.stream()
                 .map(i -> modelMapper.map(i, ImagePreviewDetails.class))

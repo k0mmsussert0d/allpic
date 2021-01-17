@@ -72,6 +72,16 @@ public class ImageDTOServiceImpl implements ImageDTOService {
     }
 
     @Override
+    public List<ImageDTO> findAllOrderByUploadedTimeDesc(int page, int perPage) {
+        List<ImageDTO> images = findAllOrderByUploadedTimeDesc();
+        try {
+            return images.subList((page - 1) * perPage, (page - 1) * perPage + perPage);
+        } catch (IndexOutOfBoundsException e) {
+            return images;
+        }
+    }
+
+    @Override
     public ImageDTO save(ImageDTO image) {
         Image savedImage = imageService.save(modelMapper.map(image, Image.class));
         return modelMapper.map(savedImage, ImageDTO.class);

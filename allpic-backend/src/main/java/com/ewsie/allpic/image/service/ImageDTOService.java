@@ -14,5 +14,7 @@ public interface ImageDTOService {
 
     List<ImageDTO> findAllOrderByUploadedTimeDesc();
 
+    List<ImageDTO> findAllOrderByUploadedTimeDesc(int page, int perPage);
+
     ImageDTO save(ImageDTO image);
 }

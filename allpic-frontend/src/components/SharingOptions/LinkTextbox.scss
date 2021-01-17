@@ -1,0 +1,23 @@
+@import "../../styles/variables.scss";
+
+.copy-icon {
+  margin: 0 5px;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.sharing-options {
+  align-items: center;
+  
+  .sharing-option {
+    &-field-body {
+      align-items: center;
+    }
+
+    &-link-body {
+      flex-grow: 1;
+    }
+  }
+}

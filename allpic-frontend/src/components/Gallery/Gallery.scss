@@ -1,0 +1,32 @@
+.image-preview {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+    z-index: 10;
+
+    @media screen and (max-width: 768px) {
+        min-height: 30vh;
+        max-height: 40vh;
+    }
+
+    @media screen and (min-width: 768px) {
+        min-height: 10vh;
+        max-height: 20vh;
+    }
+
+    &:hover {
+        transform: scale(1.5);
+        transition: all 0.5s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+        box-shadow: rgba(10, 10, 10, 2) 0px 0px 20px;
+        z-index: 20;
+    }
+
+    & > img {
+        flex-shrink: 0;
+        min-width: 100%;
+        max-width: 100%;
+
+    }
+}

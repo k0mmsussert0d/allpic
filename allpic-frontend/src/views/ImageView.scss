@@ -1,0 +1,16 @@
+@import "../styles/variables.scss";
+
+.image-details {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  margin-bottom: 2.5em;
+}
+
+.image-share {
+  display: flex;
+  justify-content: flex-end;
+
+  margin-bottom: 2.5em;
+}
