@@ -22,7 +22,8 @@ export interface UserDTO {
     id: number,
     roleName: string
   },
-  username: string
+  username: string,
+  hasAvatar: boolean
 }
 
 export interface ImageDTO {
@@ -41,7 +42,7 @@ export interface ImagePreviewDetails {
 }
 
 export interface CommentDTO {
-  author: string,
+  author: UserDTO,
   id: number,
   isPublic: boolean,
   message: string,

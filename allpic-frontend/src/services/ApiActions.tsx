@@ -189,5 +189,30 @@ export const APIMethods = {
           }
         };
       });
+  },
+
+  resetPassword: async (oldPwd: string, newPwd: string): Promise<APIResponse<UserDTO>> => {
+    return axios.put<UserDTO>('/user/reset', { oldPwd: oldPwd, newPwd: newPwd } )
+      .then((res: AxiosResponse<UserDTO>): APIResponse<UserDTO> => {
+        return {
+          message: {
+            type: 'success',
+            text: 'Password successfully reset'
+          },
+          response: res.data
+        };
+      })
+      .catch((reason: AxiosError): APIResponse<UserDTO> => {
+        return {
+          message: {
+            type: 'failure',
+            text: reason.response?.data?.message as string ?? 'Error on resetting password'
+          }
+        };
+      });
+  },
+
+  getAvatarLink: (username: string): string => {
+    return `${axios.defaults.baseURL}/user/${username}/avatar`;
   }
 }

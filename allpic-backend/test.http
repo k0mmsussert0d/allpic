@@ -127,8 +127,8 @@ Cookie: authentication={{session_id}}
 ### Success: 200
 ### Failure (image not found): 404
 ### Failure (not enough permissions): 403
-DELETE http://{{host}}/comment/{{comment_id}}
-Cookie: authentication={{session_id}}
+DELETE http://{{host}}/comment/54
+Cookie: authentication=-1nlvea9xo4q8hsax9vq01d06i
 
 ### Get list of users (all)
 
