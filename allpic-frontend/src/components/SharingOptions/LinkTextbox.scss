@@ -1,7 +1,6 @@
 @import "../../styles/variables.scss";
 
 .copy-icon {
-  flex-basis: 0;
   margin: 0 5px;
 
   &:hover {
@@ -9,13 +8,9 @@
   }
 }
 
-.sharing-dropdown {
-  min-width: 30rem;
-}
-
 .sharing-options {
   align-items: center;
-
+  
   .sharing-option {
     &-field-body {
       align-items: center;

@@ -2,6 +2,7 @@ import { Icon, Dropdown, Button } from "rbx";
 import { APIMethods } from "../../services/ApiActions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShare } from "@fortawesome/free-solid-svg-icons";
+import './SharingOptions.scss';
 import LinkTextbox from "./LinkTextbox";
 
 const SharingOptions = ({ token }: SharpingOptionsProps) => {
