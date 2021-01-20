@@ -13,7 +13,7 @@ export const APIMethods = {
         return {
           response: {
             authenticated: true,
-            userDetails: res.data
+            username: res.data.username
           }
         };
       })
@@ -21,7 +21,7 @@ export const APIMethods = {
         return {
           response: {
             authenticated: false,
-            userDetails: res.data ?? undefined
+            username: res.data.username ?? undefined
           }
         };
       });
@@ -214,5 +214,46 @@ export const APIMethods = {
 
   getAvatarLink: (username: string): string => {
     return `${axios.defaults.baseURL}/user/${username}/avatar`;
+  },
+
+  getUserDetails: async (username: string): Promise<APIResponse<UserDTO>> => {
+    return axios.get<UserDTO>(`/user/${username}`)
+      .then((res: AxiosResponse<UserDTO>): APIResponse<UserDTO> => {
+        return {
+          message: {
+            type: 'success',
+          },
+          response: res.data
+        };
+      })
+      .catch((reason: AxiosError): APIResponse<UserDTO> => {
+        return {
+          message: {
+            type: 'failure',
+            text: 'Error fetching user details'
+          }
+        };
+      });
+  },
+
+  setAvatar: async(data: FormData): Promise<APIResponse<UserDTO>> => {
+    return axios.post<UserDTO>('/user/av/', data)
+      .then((res: AxiosResponse<UserDTO>): APIResponse<UserDTO> => {
+        return {
+          message: {
+            type: 'success',
+            text: 'Avatar set successfully'
+          },
+          response: res.data
+        };
+      })
+      .catch((reason: AxiosError): APIResponse<UserDTO> => {
+        return {
+          message: {
+            type: 'failure',
+            text: reason.response?.data?.message as string ?? 'Error while setting avatar'
+          }
+        };
+      });
   }
 }

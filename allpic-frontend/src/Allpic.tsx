@@ -12,10 +12,11 @@ import LoginModal from "./components/LoginModal";
 import RegisterModal from "./components/RegisterModal";
 import ImageView from "./views/ImageView";
 import Home from './views/Home';
+import Profile from './views/Profile';
 
 const unauthorizedContextValue: AuthenticationContextType = {
   authenticated: false,
-  userDetails: null
+  username: null
 }
 
 const Allpic = () => {
@@ -46,6 +47,9 @@ const Allpic = () => {
             {registerModal.isShowing && <RegisterModal modalHook={registerModal} />}
             <Route path="/upload">
               <Upload />
+            </Route>
+            <Route path="/profile">
+              <Profile />
             </Route>
             <Route path="/:id" component={ImageView}/>
             <Route path="/">
