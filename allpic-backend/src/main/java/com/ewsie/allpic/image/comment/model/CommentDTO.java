@@ -28,6 +28,5 @@ public class CommentDTO {
     LocalDateTime timeAdded;
     Boolean isPublic;
 
-    @JsonSerialize(using = CustomUserDTOUsernameSerializer.class)
     UserDTO author;
 }

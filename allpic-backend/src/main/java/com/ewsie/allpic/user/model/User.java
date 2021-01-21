@@ -39,6 +39,9 @@ public class User {
     @Column(name="active", nullable = false)
     Boolean isActive;
 
+    @Column(name="avatar_set")
+    Boolean hasAvatar = false;
+
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER) // TODO: choose proper cascade type
     @JoinColumn(name = "role_id")
     Role role;

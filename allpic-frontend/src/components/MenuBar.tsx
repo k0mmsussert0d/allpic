@@ -32,7 +32,7 @@ const MenuBar = ({ loginModal, registerModal }: MenuBarProps): JSX.Element => {
     window.location.href = "/";
   }
 
-  const loginRegisterOptions = () => {
+  const unauthorizedRightMenu = () => {
     return (
       <>
         <Navbar.Item>
@@ -47,11 +47,16 @@ const MenuBar = ({ loginModal, registerModal }: MenuBarProps): JSX.Element => {
     );
   };
 
-  const logoutOption = () => {
+  const authorizedRightMenu = () => {
     return (
       <>
           <Navbar.Item>
             <Button.Group>
+              <Link to="/profile">
+                <Button color="light">
+                  Profile
+                </Button>
+              </Link>
               <Button color="light" onClick={logout}>Log out</Button>
             </Button.Group>
           </Navbar.Item>
@@ -72,7 +77,7 @@ const MenuBar = ({ loginModal, registerModal }: MenuBarProps): JSX.Element => {
       </Navbar.Brand>
       <Navbar.Menu>
         <Navbar.Segment align="end">
-          {auth ? logoutOption() : loginRegisterOptions()}
+          {auth ? authorizedRightMenu() : unauthorizedRightMenu()}
         </Navbar.Segment>
       </Navbar.Menu>
     </Navbar>

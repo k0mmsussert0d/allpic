@@ -1,3 +1,5 @@
+@host = localhost:8080
+
 ### Register user
 ### Success: 200
 ### Failure: 401
@@ -19,8 +21,8 @@ POST {{host}}/auth/login
 Content-Type: application/json
 
 {
-  "username": "admin",
-  "password": "bar222"
+  "username": "username",
+  "password": "Password1"
 }
 
 ###
@@ -43,13 +45,13 @@ Cookie: authentication={{session_id}}
 ### Success: 200 + body
 ### Failure: 401
 ### Error: 503
-POST http://{{host}}/img/upload
+POST http://{{host}}/img/
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 
 --WebAppBoundary
 Content-Disposition: form-data; name="file"; filename="test.png"
 
-< ./../../img/1522881821450bf6aScreen-Shot-2018-04-04-at-3.41.25-PM-940x641.png
+< ./src/test/resources/test.jpg
 --WebAppBoundary
 Content-Disposition: form-data; name="metadata"
 Content-Type: application/json
@@ -66,7 +68,7 @@ Content-Type: application/json
 ### Success: 200 + file stream
 ### Failure: 404
 ### Error: 503
-GET http://{{host}}/img/i/{{token}}
+GET http://{{host}}/img/i/wDMZx
 
 ### Get an image thumbnail
 ### Success: 200 + file stream
@@ -85,17 +87,17 @@ GET http://{{host}}/img/recent
 ### Post a comment
 ### Success: 200
 ### Failure: 401, 404
-PUT http://{{host}}/comment/{{imageToken}}
-Cookie: authentication={{session_id}}
+POST http://{{host}}/comment/QeAgh
+Cookie: authentication=x22kd6snpa5v-5ubypvn9g1xw
 Content-Type: text/plain
 
-test comment 123456
+that's a very big bernkastel
 ###
 
 ### Get comments for image
 ### Success: 200 + json
 ### Failure: 404
-GET http://{{host}}/comment/{{imageToken}}
+GET http://{{host}}/comment/QeAgh
 
 ### Get user info
 ### Success: 200 + json
@@ -125,8 +127,8 @@ Cookie: authentication={{session_id}}
 ### Success: 200
 ### Failure (image not found): 404
 ### Failure (not enough permissions): 403
-DELETE http://{{host}}/comment/{{comment_id}}
-Cookie: authentication={{session_id}}
+DELETE http://{{host}}/comment/54
+Cookie: authentication=-1nlvea9xo4q8hsax9vq01d06i
 
 ### Get list of users (all)
 
@@ -164,3 +166,30 @@ Cookie: authentication={{admin_session_id}}
 ### Failure: 404 (no such user)
 DELETE http://{{host}}/mod/{{userid}}
 Cookie: authentication={{admin_session_id}}
+
+###
+
+PUT http://{{host}}/user/reset
+Cookie: authentication=87qgaa219fn0-11cvxi4ji4rk8
+Content-Type: application/json
+
+{
+  "oldPwd": "Password3",
+  "newPwd": "Password1"
+}
+
+###
+
+POST http://{{host}}/user/av/
+Cookie: authentication=-1p4gr0gdcrr0e-1cgmzkn2t8juv
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="test.jpg"
+
+< ./src/test/resources/test.jpg
+--WebAppBoundary
+
+###
+
+GET http://{{host}}/user/username/avatar

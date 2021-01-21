@@ -31,6 +31,8 @@ public class UserDTO {
     LocalDateTime registerTime;
     Boolean isActive;
 
+    Boolean hasAvatar;
+
     @JsonSerialize(using = CustomRoleDTORoleNameSerializer.class)
     RoleDTO role;
 }

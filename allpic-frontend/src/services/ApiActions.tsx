@@ -5,6 +5,7 @@ import {APIResponse, CommentDTO, ImageDTO, ImagePreviewDetails, UserDetails, Use
 import {AxiosError, AxiosResponse} from "axios";
 import {LoginFormData} from "../components/LoginModal";
 import Configuration from "./Configuration";
+import { ChangePasswordFormData } from "../components/ChangePasswordModal";
 
 export const APIMethods = {
   getAuth: async (): Promise<APIResponse<AuthenticationContextType>> => {
@@ -13,7 +14,7 @@ export const APIMethods = {
         return {
           response: {
             authenticated: true,
-            userDetails: res.data
+            username: res.data.username
           }
         };
       })
@@ -21,7 +22,7 @@ export const APIMethods = {
         return {
           response: {
             authenticated: false,
-            userDetails: res.data ?? undefined
+            username: res.data.username ?? undefined
           }
         };
       });
@@ -188,6 +189,113 @@ export const APIMethods = {
             text: 'Failed to add comment'
           }
         };
+      });
+  },
+
+  resetPassword: async (oldPwd: string, newPwd: string): Promise<APIResponse<UserDTO>> => {
+    return axios.put<UserDTO>('/user/reset', { oldPwd: oldPwd, newPwd: newPwd } )
+      .then((res: AxiosResponse<UserDTO>): APIResponse<UserDTO> => {
+        return {
+          message: {
+            type: 'success',
+            text: 'Password successfully reset'
+          },
+          response: res.data
+        };
+      })
+      .catch((reason: AxiosError): APIResponse<UserDTO> => {
+        return {
+          message: {
+            type: 'failure',
+            text: reason.response?.data?.message as string ?? 'Error on resetting password'
+          }
+        };
+      });
+  },
+
+  getAvatarLink: (username: string): string => {
+    return `${axios.defaults.baseURL}/user/${username}/avatar`;
+  },
+
+  getUserDetails: async (username: string): Promise<APIResponse<UserDTO>> => {
+    return axios.get<UserDTO>(`/user/${username}`)
+      .then((res: AxiosResponse<UserDTO>): APIResponse<UserDTO> => {
+        return {
+          message: {
+            type: 'success',
+          },
+          response: res.data
+        };
+      })
+      .catch((reason: AxiosError): APIResponse<UserDTO> => {
+        return {
+          message: {
+            type: 'failure',
+            text: 'Error fetching user details'
+          }
+        };
+      });
+  },
+
+  setAvatar: async(data: FormData): Promise<APIResponse<UserDTO>> => {
+    return axios.post<UserDTO>('/user/av/', data)
+      .then((res: AxiosResponse<UserDTO>): APIResponse<UserDTO> => {
+        return {
+          message: {
+            type: 'success',
+            text: 'Avatar set successfully'
+          },
+          response: res.data
+        };
+      })
+      .catch((reason: AxiosError): APIResponse<UserDTO> => {
+        return {
+          message: {
+            type: 'failure',
+            text: reason.response?.data?.message as string ?? 'Error while setting avatar'
+          }
+        };
+      });
+  },
+
+  getUserImages: async(username: string): Promise<APIResponse<Array<ImagePreviewDetails>>> => {
+    return axios.get<Array<ImagePreviewDetails>>('/user/images')
+      .then((res: AxiosResponse<Array<ImagePreviewDetails>>): APIResponse<Array<ImagePreviewDetails>> => {
+        return {
+          message: {
+            type: 'success'
+          },
+          response: res.data
+        };
+      })
+      .catch((reason: AxiosError): APIResponse<Array<ImagePreviewDetails>> => {
+        return {
+          message: {
+            type: 'failure',
+            text: 'Unable to fetch user images'
+          }
+        };
+      });
+  },
+
+  changePassword: async(requestData: ChangePasswordFormData): Promise<APIResponse<UserDetails>> => {
+    return axios.put('/user/reset', requestData)
+      .then((res: AxiosResponse<UserDetails>): APIResponse<UserDetails> => {
+        return {
+          message: {
+            type: 'success',
+            text: 'Password changed'
+          },
+          response: res.data
+        };
+      })
+      .catch((reason: AxiosError): APIResponse<UserDetails> => {
+          return {
+            message: {
+              type: 'failure',
+              text: reason.response?.data?.message as string ?? 'Error while changing passsword'
+            }
+          };
       });
   }
 }

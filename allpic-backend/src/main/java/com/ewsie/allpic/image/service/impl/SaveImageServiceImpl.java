@@ -1,17 +1,11 @@
 package com.ewsie.allpic.image.service.impl;
 
 import com.amazonaws.SdkClientException;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.ewsie.allpic.config.AppConfig;
 import com.ewsie.allpic.image.model.ImageDTO;
-import com.ewsie.allpic.image.service.ImageDTOService;
-import com.ewsie.allpic.image.service.ImageThumbnailService;
-import com.ewsie.allpic.image.service.ImageTokenService;
-import com.ewsie.allpic.image.service.SaveImageService;
+import com.ewsie.allpic.image.service.*;
 import com.ewsie.allpic.user.model.UserDTO;
+import com.ewsie.allpic.utils.FilenameExtractors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,15 +21,16 @@ public class SaveImageServiceImpl implements SaveImageService {
     private final AppConfig appConfig;
     private final ImageTokenService imageTokenService;
     private final ImageDTOService imageDTOService;
-    private final Map<String, String> extensionToMimeType;
     private final ImageThumbnailService imageThumbnailService;
+    private final UploadFileService uploadFileService;
+    private final FilenameExtractors filenameExtractors;
 
     @Override
     public ImageDTO saveImage(InputStream imageFileInputStream, String imageFilename, String title, boolean isPublic, UserDTO uploader)
             throws IllegalArgumentException, SdkClientException, IOException {
 
         String token = getUniqueImageToken();
-        String mimeType = getFileMimeType(imageFilename);
+        String mimeType = filenameExtractors.getFileMimeType(imageFilename);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         imageFileInputStream.transferTo(baos);
@@ -43,10 +38,12 @@ public class SaveImageServiceImpl implements SaveImageService {
         InputStream inputStream2 = new ByteArrayInputStream(baos.toByteArray());
 
         ImageDTO savedImageDTO = getPersistedImageDto(title, isPublic, uploader, token);
-        File thumbnailImage = imageThumbnailService.generateThumbnail(inputStream1, token, getFileExtension(imageFilename));
+        File thumbnailImage = imageThumbnailService.generateThumbnail(inputStream1);
 
-        uploadImageToS3(inputStream2, token, mimeType);
-        uploadImageToS3(new FileInputStream(thumbnailImage), token + "_thumb", mimeType);
+        Map<String, String> mainObjectMetadata = Map.of("token", token, "type", "image");
+        Map<String, String> thumbObjectMetadata = Map.of("token", token, "type", "thumb");
+        uploadFileService.uploadFile(inputStream2, token, mainObjectMetadata, mimeType);
+        uploadFileService.uploadFile(new FileInputStream(thumbnailImage), token + "_thumb", thumbObjectMetadata, "image/jpeg");
         thumbnailImage.deleteOnExit();
 
         return savedImageDTO;
@@ -64,29 +61,6 @@ public class SaveImageServiceImpl implements SaveImageService {
         return token;
     }
 
-    private String getFileMimeType(String filename) {
-        Optional<String> extension = Optional.ofNullable(getFileExtension(filename));
-        if (extension.isEmpty()) {
-            throw new IllegalArgumentException("Uploading files with no extension is not allowed");
-        }
-
-        Optional<String> mimeType = Optional.ofNullable(extensionToMimeType.get(extension.get()));
-        if (mimeType.isEmpty()) {
-            throw new IllegalArgumentException("File type " + extension.get() + " is not allowed");
-        }
-
-        return mimeType.get();
-    }
-
-    private String getFileExtension(String filename) {
-        int i = filename.lastIndexOf('.');
-        if (i > 0) {
-            return filename.substring(i + 1);
-        }
-
-        return null;
-    }
-
     private ImageDTO getPersistedImageDto(String title, boolean isPublic, UserDTO uploader, String token) {
         ImageDTO imageDTO = ImageDTO.builder()
                 .token(token)
@@ -97,17 +71,5 @@ public class SaveImageServiceImpl implements SaveImageService {
                 .uploader(uploader)
                 .build();
         return imageDTOService.save(imageDTO);
-    }
-
-    private void uploadImageToS3(InputStream imageStream, String token, String mimeType) throws IOException {
-        AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
-                .withRegion(appConfig.getAwsRegion())
-                .build();
-
-        ObjectMetadata metadata = new ObjectMetadata();
-        metadata.setContentType(mimeType);
-        metadata.addUserMetadata("token", token);
-        PutObjectRequest request = new PutObjectRequest(appConfig.getS3StorageBucket(), token, imageStream, metadata);
-        s3Client.putObject(request);
     }
 }

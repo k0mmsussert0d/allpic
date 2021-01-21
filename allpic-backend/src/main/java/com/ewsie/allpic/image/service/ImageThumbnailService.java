@@ -6,5 +6,5 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public interface ImageThumbnailService {
-    File generateThumbnail(InputStream file, String token, String extension) throws IOException;
+    File generateThumbnail(InputStream file) throws IOException;
 }
