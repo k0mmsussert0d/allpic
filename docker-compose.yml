@@ -20,8 +20,8 @@ services:
       - db
   frontend:
     build: ./allpic-frontend
-    environment:
-      - API_URL=http://localhost/api
+    volumes:
+      - ./docker/frontend/.env:/app/.env
     depends_on:
       - backend
   proxy:
