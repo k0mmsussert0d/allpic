@@ -255,5 +255,25 @@ export const APIMethods = {
           }
         };
       });
+  },
+
+  getUserImages: async(username: string): Promise<APIResponse<Array<ImagePreviewDetails>>> => {
+    return axios.get<Array<ImagePreviewDetails>>('/user/images')
+      .then((res: AxiosResponse<Array<ImagePreviewDetails>>): APIResponse<Array<ImagePreviewDetails>> => {
+        return {
+          message: {
+            type: 'success'
+          },
+          response: res.data
+        };
+      })
+      .catch((reason: AxiosError): APIResponse<Array<ImagePreviewDetails>> => {
+        return {
+          message: {
+            type: 'failure',
+            text: 'Unable to fetch user images'
+          }
+        };
+      });
   }
 }

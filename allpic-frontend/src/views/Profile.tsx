@@ -9,11 +9,13 @@ import {
   Button,
   Icon,
 } from "rbx";
-import { UserDTO } from "../types/API";
+import { APIResponse, ImagePreviewDetails, UserDTO } from "../types/API";
 import { APIMethods } from "../services/ApiActions";
 import "./Profile.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import "./../components/Gallery/Gallery.scss";
+import Gallery from "../components/Gallery/Gallery";
 
 const Profile = () => {
   const auth = useContext(AuthenticationContext);
@@ -22,6 +24,8 @@ const Profile = () => {
   );
   const formRef = useRef<HTMLFormElement>(null);
   const formInputRef = useRef<HTMLInputElement>(null);
+
+  const [images, setImages] = useState<Array<Array<ImagePreviewDetails>>>([[]]);
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -37,11 +41,52 @@ const Profile = () => {
     fetchUserDetails();
   }, [auth.username]);
 
+  useEffect(() => {
+    const fetchLatestImages = async (): Promise<
+      APIResponse<Array<ImagePreviewDetails>>
+    > => {
+      return await APIMethods.getUserImages(userDetails!.username as string);
+    };
+
+    if (userDetails?.username) {
+      fetchLatestImages().then((res) => {
+        if (!res || !res.response) {
+          setImages([[]]);
+          return;
+        }
+
+        const perChunk = res.response?.length / 12; // items per chunk
+
+        let result: Array<Array<ImagePreviewDetails>> =
+          res.response?.reduce(
+            (
+              resultArray: Array<Array<ImagePreviewDetails>>,
+              item: ImagePreviewDetails,
+              index: number
+            ) => {
+              const chunkIndex = Math.floor(index / perChunk);
+
+              if (!resultArray[chunkIndex]) {
+                resultArray[chunkIndex] = []; // start a new chunk
+              }
+
+              resultArray[chunkIndex].push(item);
+
+              return resultArray;
+            },
+            []
+          ) ?? [];
+
+        setImages(result);
+      });
+    }
+  }, [userDetails]);
+
   const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault();
 
     formInputRef.current?.click();
-  }
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     if (e.currentTarget?.files) {
@@ -58,15 +103,12 @@ const Profile = () => {
   };
 
   const parseDate = (date: string): string => {
-    return new Date(date).toLocaleTimeString(
-      'en-gb',
-      {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      }
-    );
-  }
+    return new Date(date).toLocaleTimeString("en-gb", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
 
   const renderAuthorized = () => {
     return (
@@ -96,7 +138,10 @@ const Profile = () => {
         </Generic>
         <Generic as="div" className="user-details">
           <Title size={2}>{userDetails && userDetails.username}</Title>
-          <Title size={4} subtitle>{userDetails && `Registered on ${parseDate(userDetails.registerTime)}`}</Title>
+          <Title size={4} subtitle>
+            {userDetails &&
+              `Registered on ${parseDate(userDetails.registerTime)}`}
+          </Title>
         </Generic>
       </Generic>
     );
@@ -111,9 +156,14 @@ const Profile = () => {
   };
 
   return (
-    <Generic as="div" className="main-wrapper">
-      {auth.authenticated ? renderAuthorized() : renderUnauthorized()}
-    </Generic>
+    <>
+      <Generic as="div" className="main-wrapper">
+        {auth.authenticated ? renderAuthorized() : renderUnauthorized()}
+      </Generic>
+      <Generic as="div" className="gallery-wrapper">
+        {auth.authenticated && <Gallery images={images} />}
+      </Generic>
+    </>
   );
 };
 
