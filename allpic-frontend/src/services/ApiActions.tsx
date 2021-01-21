@@ -5,6 +5,7 @@ import {APIResponse, CommentDTO, ImageDTO, ImagePreviewDetails, UserDetails, Use
 import {AxiosError, AxiosResponse} from "axios";
 import {LoginFormData} from "../components/LoginModal";
 import Configuration from "./Configuration";
+import { ChangePasswordFormData } from "../components/ChangePasswordModal";
 
 export const APIMethods = {
   getAuth: async (): Promise<APIResponse<AuthenticationContextType>> => {
@@ -274,6 +275,27 @@ export const APIMethods = {
             text: 'Unable to fetch user images'
           }
         };
+      });
+  },
+
+  changePassword: async(requestData: ChangePasswordFormData): Promise<APIResponse<UserDetails>> => {
+    return axios.put('/user/reset', requestData)
+      .then((res: AxiosResponse<UserDetails>): APIResponse<UserDetails> => {
+        return {
+          message: {
+            type: 'success',
+            text: 'Password changed'
+          },
+          response: res.data
+        };
+      })
+      .catch((reason: AxiosError): APIResponse<UserDetails> => {
+          return {
+            message: {
+              type: 'failure',
+              text: reason.response?.data?.message as string ?? 'Error while changing passsword'
+            }
+          };
       });
   }
 }

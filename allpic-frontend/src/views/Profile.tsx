@@ -16,15 +16,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import "./../components/Gallery/Gallery.scss";
 import Gallery from "../components/Gallery/Gallery";
+import { UseModalType } from "../hooks/useModal";
 
-const Profile = () => {
+const Profile = ({changePasswordModal}: ProfileProps) => {
   const auth = useContext(AuthenticationContext);
   const [userDetails, setUserDetails] = useState<UserDTO | undefined>(
     undefined
   );
   const formRef = useRef<HTMLFormElement>(null);
   const formInputRef = useRef<HTMLInputElement>(null);
-
   const [images, setImages] = useState<Array<Array<ImagePreviewDetails>>>([[]]);
 
   useEffect(() => {
@@ -142,6 +142,9 @@ const Profile = () => {
             {userDetails &&
               `Registered on ${parseDate(userDetails.registerTime)}`}
           </Title>
+          <Button color='primary' onClick={() => changePasswordModal.toggle()}>
+            Reset password
+          </Button>
         </Generic>
       </Generic>
     );
@@ -166,5 +169,9 @@ const Profile = () => {
     </>
   );
 };
+
+export interface ProfileProps {
+  changePasswordModal: UseModalType
+}
 
 export default Profile;
