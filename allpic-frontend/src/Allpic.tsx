@@ -41,7 +41,7 @@ const Allpic = () => {
 
   return (
     <AuthenticationContextProvider value={authorizedUser}>
-      <Router>
+      <Router basename={process.env.PUBLIC_URL}>
         <Content>
           <MenuBar loginModal={loginModal} registerModal={registerModal}/>
           <Switch>
