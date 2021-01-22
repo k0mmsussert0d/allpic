@@ -117,6 +117,8 @@ public class ImageControllerImpl implements ImageController {
         List<ImageDTO> recentImages = imageDTOService.findAllOrderByUploadedTimeDesc(page, perPage);
 
         List<ImagePreviewDetails> res = recentImages.stream()
+                .filter(ImageDTO::getIsPublic)
+                .filter(ImageDTO::getIsActive)
                 .map(i -> modelMapper.map(i, ImagePreviewDetails.class))
                 .collect(Collectors.toList());
 
