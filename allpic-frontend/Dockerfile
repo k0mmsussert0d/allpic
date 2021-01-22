@@ -1,6 +1,4 @@
-#
-# Build stage
-FROM node:14-alpine AS build
+FROM node:14-alpine
 
 # Specify API URL (e.g. 'http://localhost:8080/')
 ARG API_ENDPOINT=''
@@ -19,13 +17,7 @@ ENV REACT_APP_API_TIMEOUT=${API_TIMEOUT}
 WORKDIR /app
 COPY package.json yarn.lock ./
 RUN yarn
+RUN yarn global add serve
 COPY . ./
 RUN yarn build
-
-#
-# Package stage
-FROM nginx:mainline-alpine
-WORKDIR /app
-COPY --from=build /app/build /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["serve", "-s", "build"]
